@@ -59,9 +59,11 @@ async def require_confirm_final(
     timebonuds: tuple[int, int],
     is_sending_from_trezor_account: bool,
 ) -> None:
-    from apps.common import paths
-    from . import PATTERN, SLIP44_ID
     from trezor.wire import DataError
+
+    from apps.common import paths
+
+    from . import PATTERN, SLIP44_ID
 
     timebonuds_start, timebonuds_end = timebonuds
     extra_items = [

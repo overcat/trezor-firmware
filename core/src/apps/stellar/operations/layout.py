@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 from ubinascii import hexlify
 
 from trezor import TR
+from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import (
     confirm_address,
     confirm_amount,
@@ -11,7 +12,6 @@ from trezor.ui.layouts import (
     should_show_more,
 )
 from trezor.wire import DataError, ProcessError
-from trezor.enums import ButtonRequestType
 
 from ..layout import format_amount
 

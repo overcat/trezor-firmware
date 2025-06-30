@@ -23,7 +23,7 @@ async def sign_tx(msg: StellarSignTx, keychain: Keychain) -> StellarSignedTx:
 
     from apps.common import paths, seed
 
-    from . import consts, helpers, layout, writers, PATTERN, SLIP44_ID
+    from . import consts, helpers, layout, writers
     from .operations import process_operation
 
     await paths.validate_path(keychain, msg.address_n)
@@ -101,7 +101,7 @@ async def sign_tx(msg: StellarSignTx, keychain: Keychain) -> StellarSignedTx:
         op = await call_any(StellarTxOpRequest(), *consts.op_codes.keys())
         await process_operation(w, op)  # type: ignore [Argument of type "MessageType" cannot be assigned to parameter "op" of type "StellarMessageType" in function "process_operation"]
 
-        if op.source_account is not None and op.source_account != address:
+        if op.source_account is not None and op.source_account != address:  # type: ignore [Cannot access attribute "source_account" for class "MessageType"]
             # if the operation source account does not match the Trezor account
             is_sending_from_trezor_account = False
 
