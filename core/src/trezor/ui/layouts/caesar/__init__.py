@@ -1291,6 +1291,35 @@ if not utils.BITCOIN_ONLY:
             except ActionCancelled:
                 continue
 
+    def confirm_stellar_tx(
+        fee: str,
+        account_name: str,
+        account_path: str,
+        is_sending_from_trezor_account: bool,
+        extra_items: Iterable[tuple[str, str]],
+    ) -> Awaitable[None]:
+        return raise_if_not_confirmed(
+            trezorui_api.confirm_summary(
+                amount=None,
+                amount_label=None,
+                fee=fee,
+                fee_label=TR.send__maximum_fee,
+                account_items=[
+                    (TR.words__account, account_name),
+                    (TR.address_details__derivation_path, account_path),
+                ],
+                account_title=(
+                    TR.send__send_from
+                    if is_sending_from_trezor_account
+                    else TR.stellar__sign_with
+                ),
+                extra_items=extra_items,
+                extra_title=TR.stellar__timebounds,
+            ),
+            br_name="confirm_stellar_tx",
+            br_code=ButtonRequestType.SignTx,
+        )
+
 
 def confirm_joint_total(spending_amount: str, total_amount: str) -> Awaitable[None]:
     return confirm_properties(

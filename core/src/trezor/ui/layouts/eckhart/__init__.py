@@ -800,6 +800,7 @@ def _confirm_summary(
     fee_label: str,
     title: str | None = None,
     account_items: Iterable[tuple[str, str]] | None = None,
+    account_title: str | None = None,
     extra_items: Iterable[tuple[str, str]] | None = None,
     extra_title: str | None = None,
     br_name: str = "confirm_total",
@@ -815,6 +816,7 @@ def _confirm_summary(
             fee_label=fee_label,
             title=title,
             account_items=account_items or None,
+            account_title=account_title,
             extra_items=extra_items or None,
             extra_title=extra_title or None,
         ),
@@ -991,6 +993,7 @@ if not utils.BITCOIN_ONLY:
             TR.send__maximum_fee,
             TR.words__title_summary,
             account_items,
+            None,
             fee_info_items,
             TR.confirm_total__title_fee,
         )
@@ -1140,6 +1143,33 @@ if not utils.BITCOIN_ONLY:
             fee_title,
             extra_items=items,
             br_name="confirm_cardano_tx",
+            br_code=ButtonRequestType.SignTx,
+        )
+
+    def confirm_stellar_tx(
+        fee: str,
+        account_name: str,
+        account_path: str,
+        is_sending_from_trezor_account: bool,
+        extra_items: Iterable[tuple[str, str]],
+    ) -> Awaitable[None]:
+        return _confirm_summary(
+            None,
+            None,
+            fee,
+            TR.send__maximum_fee,
+            account_items=[
+                (TR.words__account, account_name),
+                (TR.address_details__derivation_path, account_path),
+            ],
+            account_title=(
+                TR.send__send_from
+                if is_sending_from_trezor_account
+                else TR.stellar__sign_with
+            ),
+            extra_items=extra_items,
+            extra_title=TR.stellar__timebounds,
+            br_name="confirm_stellar_tx",
             br_code=ButtonRequestType.SignTx,
         )
 

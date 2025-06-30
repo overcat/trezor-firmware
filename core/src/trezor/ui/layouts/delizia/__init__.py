@@ -1156,7 +1156,7 @@ if not utils.BITCOIN_ONLY:
                 else TR.stellar__sign_with
             ),
             extra_items=extra_items,
-            extra_title="TimeBounds",
+            extra_title=TR.stellar__timebounds,
             br_name="confirm_stellar_tx",
             br_code=ButtonRequestType.SignTx,
         )
