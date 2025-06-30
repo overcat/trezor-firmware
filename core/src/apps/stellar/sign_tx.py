@@ -23,7 +23,7 @@ async def sign_tx(msg: StellarSignTx, keychain: Keychain) -> StellarSignedTx:
 
     from apps.common import paths, seed
 
-    from . import consts, helpers, layout, writers
+    from . import consts, helpers, layout, writers, PATTERN, SLIP44_ID
     from .operations import process_operation
 
     await paths.validate_path(keychain, msg.address_n)
@@ -40,6 +40,8 @@ async def sign_tx(msg: StellarSignTx, keychain: Keychain) -> StellarSignedTx:
     # ---------------------------------
     # INIT
     # ---------------------------------
+    is_sending_from_trezor_account = True
+
     network_passphrase_hash = sha256(msg.network_passphrase.encode()).digest()
     writers.write_bytes_fixed(w, network_passphrase_hash, 32)
     writers.write_bytes_fixed(w, consts.TX_TYPE, 4)
@@ -51,16 +53,10 @@ async def sign_tx(msg: StellarSignTx, keychain: Keychain) -> StellarSignedTx:
     writers.write_uint32(w, msg.fee)
     writers.write_uint64(w, msg.sequence_number)
 
-    # confirm init
-    await layout.require_confirm_init(
-        msg.source_account, msg.network_passphrase, accounts_match
-    )
-
-    # ---------------------------------
-    # TIMEBOUNDS
-    # ---------------------------------
-    # confirm dialog
-    await layout.require_confirm_timebounds(msg.timebounds_start, msg.timebounds_end)
+    if not accounts_match:
+        is_sending_from_trezor_account = False
+        # If the tx source account does not match the Trezor account, we need to confirm it.
+        await layout.require_confirm_tx_source(msg.source_account)
 
     # timebounds are sent as uint32s since that's all we can display, but they must be hashed as 64bit
     writers.write_bool(w, True)
@@ -105,13 +101,22 @@ async def sign_tx(msg: StellarSignTx, keychain: Keychain) -> StellarSignedTx:
         op = await call_any(StellarTxOpRequest(), *consts.op_codes.keys())
         await process_operation(w, op)  # type: ignore [Argument of type "MessageType" cannot be assigned to parameter "op" of type "StellarMessageType" in function "process_operation"]
 
+        if op.source_account is not None and op.source_account != address:
+            # if the operation source account does not match the Trezor account
+            is_sending_from_trezor_account = False
+
     # ---------------------------------
     # FINAL
     # ---------------------------------
     # 4 null bytes representing a (currently unused) empty union
     writers.write_uint32(w, 0)
     # final confirm
-    await layout.require_confirm_final(msg.fee, num_operations)
+    await layout.require_confirm_final(
+        msg.address_n,
+        msg.fee,
+        (msg.timebounds_start, msg.timebounds_end),
+        is_sending_from_trezor_account,
+    )
 
     # sign
     digest = sha256(w).digest()

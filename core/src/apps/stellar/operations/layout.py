@@ -8,8 +8,10 @@ from trezor.ui.layouts import (
     confirm_metadata,
     confirm_output,
     confirm_properties,
+    should_show_more,
 )
 from trezor.wire import DataError, ProcessError
+from trezor.enums import ButtonRequestType
 
 from ..layout import format_amount
 
@@ -83,13 +85,8 @@ async def confirm_change_trust_op(op: StellarChangeTrustOp) -> None:
 
 
 async def confirm_create_account_op(op: StellarCreateAccountOp) -> None:
-    await confirm_properties(
-        "op_create_account",
-        TR.stellar__create_account,
-        (
-            (TR.words__account, op.new_account, True),
-            (TR.stellar__initial_balance, format_amount(op.starting_balance), False),
-        ),
+    await confirm_output(
+        op.new_account, format_amount(op.starting_balance), chunkify=True
     )
 
 
@@ -238,11 +235,27 @@ async def confirm_path_payment_strict_send_op(
 
 
 async def confirm_payment_op(op: StellarPaymentOp) -> None:
-    await confirm_output(
-        op.destination_account,
-        format_amount(op.amount, op.asset),
-    )
-    await confirm_asset_issuer(op.asset)
+    from trezor.enums import StellarAssetType
+
+    amount = format_amount(op.amount, op.asset)
+    if op.asset.type == StellarAssetType.NATIVE:
+        await confirm_output(op.destination_account, amount, chunkify=True)
+    else:
+        await confirm_address(
+            TR.words__recipient,
+            op.destination_account,
+            subtitle=TR.send__title_sending_to,
+            br_code=ButtonRequestType.ConfirmOutput,
+        )
+        # Users can only send assets they've already trusted,
+        # so we don't display the issuer by default.
+        if await should_show_more(
+            TR.words__amount,
+            ((amount, False),),
+            TR.stellar__token_info,
+            br_code=ButtonRequestType.ConfirmOutput,
+        ):
+            await confirm_asset_issuer(op.asset)
 
 
 async def confirm_set_options_op(op: StellarSetOptionsOp) -> None:

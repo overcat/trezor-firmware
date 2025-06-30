@@ -32,7 +32,9 @@ async def get_address(msg: StellarGetAddress, keychain: Keychain) -> StellarAddr
             address,
             case_sensitive=False,
             path=paths.address_n_to_str(address_n),
-            account=paths.get_account_name("XLM", msg.address_n, PATTERN, SLIP44_ID),
+            account=paths.get_account_name(
+                "Stellar", msg.address_n, PATTERN, SLIP44_ID
+            ),
             chunkify=bool(msg.chunkify),
         )
 
