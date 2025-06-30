@@ -242,7 +242,7 @@ async def confirm_payment_op(op: StellarPaymentOp) -> None:
         await confirm_output(op.destination_account, amount, chunkify=True)
     else:
         await confirm_address(
-            TR.words__recipient,
+            TR.words__send,
             op.destination_account,
             subtitle=TR.send__title_sending_to,
             br_code=ButtonRequestType.ConfirmOutput,
@@ -358,6 +358,21 @@ def _format_flags(flags: int) -> str:
 
 
 async def confirm_asset_issuer(asset: StellarAsset) -> None:
+    from trezor.enums import StellarAssetType
+
+    if asset.type == StellarAssetType.NATIVE:
+        return
+    if asset.issuer is None or asset.code is None:
+        raise DataError("Stellar: invalid asset definition")
+    await confirm_address(
+        TR.stellar__confirm_issuer,
+        asset.issuer,
+        description=TR.stellar__issuer_template.format(asset.code),
+        br_name="confirm_asset_issuer",
+    )
+
+
+async def confirm_token_info(asset: StellarAsset) -> None:
     from trezor.enums import StellarAssetType
 
     if asset.type == StellarAssetType.NATIVE:

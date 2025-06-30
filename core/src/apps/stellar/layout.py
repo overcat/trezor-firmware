@@ -12,20 +12,8 @@ if TYPE_CHECKING:
 
 
 async def require_confirm_tx_source(tx_source: str) -> None:
-    # await layouts.confirm_value(
-    #     "title",
-    #     "value",
-    #     "desc",
-    #     br_name="123",
-    #     info_items=[
-    #         ("Name", "USDCEDRFSDF"),
-    #         ("issuer", "GAXSFOOGF4ELO5HT5PTN23T5XE6D5QWL3YBHSVQ2HWOFEJNYYMRJENBV"),
-    #     ],
-    #     chunkify_info=True,
-    # )
-
     await layouts.show_warning(
-        br_name="confirm_tx_source_not_match",
+        br_name="confirm_tx_source",
         content=TR.stellar__transaction_source_diff_warning,
         br_code=ButtonRequestType.Warning,
         button=TR.words__continue_anyway_question,
@@ -52,7 +40,7 @@ async def require_confirm_memo(memo_type: StellarMemoType, memo_text: str) -> No
         description = "Memo (RETURN)"
     else:
         return await layouts.show_warning(
-            br_name="confirm_no_memo_set",
+            br_name="confirm_memo",
             content=TR.stellar__exchanges_require_memo,
             br_code=ButtonRequestType.ConfirmOutput,
             button=TR.words__continue_anyway_question,
