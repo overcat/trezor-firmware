@@ -995,7 +995,7 @@ pub enum TranslatedString {
     #[cfg(feature = "universal_fw")]
     stellar__destination = 700,  // "Destination"
     #[cfg(feature = "universal_fw")]
-    stellar__exchanges_require_memo = 701,  // "Important: Many exchanges require a memo when depositing"
+    stellar__exchanges_require_memo = 701,  // "Memo is not set.\nTypically needed when sending to exchanges."
     #[cfg(feature = "universal_fw")]
     stellar__final_confirm = 702,  // "Final confirm"
     #[cfg(feature = "universal_fw")]
@@ -1445,6 +1445,16 @@ pub enum TranslatedString {
     recovery__share_from_group_entered_template = 1044,  // "Share #{0} from Group #{1} entered."
     send__cancel_transaction = 1045,  // "Cancel transaction"
     send__multisig_different_paths = 1046,  // "Using different paths for different XPUBs."
+    #[cfg(feature = "universal_fw")]
+    stellar__token_info = 1047,  // "Token info"
+    #[cfg(feature = "universal_fw")]
+    stellar__transaction_source = 1048,  // "Transaction source"
+    #[cfg(feature = "universal_fw")]
+    stellar__transaction_source_diff_warning = 1049,  // "Transaction source does not belong to this Trezor."
+    #[cfg(feature = "universal_fw")]
+    stellar__sign_with = 1050,  // "Sign with"
+    #[cfg(feature = "universal_fw")]
+    stellar__timebounds = 1051,  // "Timebounds"
 }
 
 impl TranslatedString {
@@ -2652,7 +2662,7 @@ impl TranslatedString {
             #[cfg(feature = "universal_fw")]
             (Self::stellar__destination, "Destination"),
             #[cfg(feature = "universal_fw")]
-            (Self::stellar__exchanges_require_memo, "Important: Many exchanges require a memo when depositing"),
+            (Self::stellar__exchanges_require_memo, "Memo is not set.\nTypically needed when sending to exchanges."),
             #[cfg(feature = "universal_fw")]
             (Self::stellar__final_confirm, "Final confirm"),
             #[cfg(feature = "universal_fw")]
@@ -3195,6 +3205,16 @@ impl TranslatedString {
             (Self::recovery__share_from_group_entered_template, "Share #{0} from Group #{1} entered."),
             (Self::send__cancel_transaction, "Cancel transaction"),
             (Self::send__multisig_different_paths, "Using different paths for different XPUBs."),
+            #[cfg(feature = "universal_fw")]
+            (Self::stellar__token_info, "Token info"),
+            #[cfg(feature = "universal_fw")]
+            (Self::stellar__transaction_source, "Transaction source"),
+            #[cfg(feature = "universal_fw")]
+            (Self::stellar__transaction_source_diff_warning, "Transaction source does not belong to this Trezor."),
+            #[cfg(feature = "universal_fw")]
+            (Self::stellar__sign_with, "Sign with"),
+            #[cfg(feature = "universal_fw")]
+            (Self::stellar__timebounds, "Timebounds"),
     ];
 
     #[cfg(feature = "micropython")]
@@ -4472,9 +4492,19 @@ impl TranslatedString {
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__sign_tx_fee_template, Self::stellar__sign_tx_fee_template),
         #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__sign_with, Self::stellar__sign_with),
+        #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__source_account, Self::stellar__source_account),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__testnet_network, Self::stellar__testnet_network),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__timebounds, Self::stellar__timebounds),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__token_info, Self::stellar__token_info),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__transaction_source, Self::stellar__transaction_source),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__transaction_source_diff_warning, Self::stellar__transaction_source_diff_warning),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__trusted_account, Self::stellar__trusted_account),
         #[cfg(feature = "universal_fw")]
