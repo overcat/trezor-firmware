@@ -10,6 +10,8 @@ from ..common import draw_simple, interact, raise_if_not_confirmed, with_info
 if TYPE_CHECKING:
     from typing import Awaitable, Iterable, NoReturn, Sequence
 
+    from trezor.messages import StellarAsset
+
     from ..common import ExceptionType, PropertyType
 
 
@@ -1274,6 +1276,39 @@ if not utils.BITCOIN_ONLY:
             extra_title=TR.words__title_information,  # The performance on T2T1 is different from other devices, so we do not use TR.stellar__timebounds here.
             br_name="confirm_stellar_tx",
             br_code=ButtonRequestType.SignTx,
+        )
+
+    async def confirm_stellar_output(
+        address: str,
+        amount: str,
+        output_index: int,
+        asset: StellarAsset,
+    ) -> None:
+        from trezor.enums import StellarAssetType
+
+        await confirm_address(
+            f"{TR.words__recipient} #{output_index + 1}",
+            address,
+            br_name="confirm_output_address",
+            br_code=ButtonRequestType.ConfirmOutput,
+        )
+
+        info_items = []
+        if asset.type != StellarAssetType.NATIVE:
+            info_items = [
+                (TR.stellar__issuer_template.format(asset.code), asset.issuer or "")
+            ]
+
+        await confirm_value(
+            f"{TR.words__amount} #{output_index + 1}",
+            amount,
+            description=None,
+            br_name="confirm_output_amount",
+            br_code=ButtonRequestType.ConfirmOutput,
+            info_items=info_items,
+            info_title=TR.stellar__token_info,
+            chunkify_info=True,
+            chunkify=False,
         )
 
 

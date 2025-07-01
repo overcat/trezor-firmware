@@ -2,14 +2,13 @@ from typing import TYPE_CHECKING
 from ubinascii import hexlify
 
 from trezor import TR
-from trezor.enums import ButtonRequestType
 from trezor.ui.layouts import (
     confirm_address,
     confirm_amount,
     confirm_metadata,
     confirm_output,
     confirm_properties,
-    should_show_more,
+    confirm_stellar_output,
 )
 from trezor.wire import DataError, ProcessError
 
@@ -56,10 +55,13 @@ async def confirm_allow_trust_op(op: StellarAllowTrustOp) -> None:
     )
 
 
-async def confirm_account_merge_op(op: StellarAccountMergeOp) -> None:
+async def confirm_account_merge_op(
+    op: StellarAccountMergeOp, output_index: int
+) -> None:
     await confirm_address(
         TR.stellar__account_merge,
         op.destination_account,
+        subtitle=f"{TR.words__recipient} #{output_index + 1}",
         description=TR.stellar__all_will_be_sent_to,
         br_name="op_account_merge",
     )
@@ -84,9 +86,13 @@ async def confirm_change_trust_op(op: StellarChangeTrustOp) -> None:
     await confirm_asset_issuer(op.asset)
 
 
-async def confirm_create_account_op(op: StellarCreateAccountOp) -> None:
+async def confirm_create_account_op(
+    op: StellarCreateAccountOp, output_index: int
+) -> None:
     await confirm_output(
-        op.new_account, format_amount(op.starting_balance), chunkify=True
+        op.new_account,
+        format_amount(op.starting_balance),
+        output_index=output_index,
     )
 
 
@@ -198,7 +204,9 @@ async def confirm_manage_data_op(op: StellarManageDataOp) -> None:
 
 async def confirm_path_payment_strict_receive_op(
     op: StellarPathPaymentStrictReceiveOp,
+    output_index: int,
 ) -> None:
+    # TODO: show output index in the subtitle
     await confirm_output(
         op.destination_account,
         format_amount(op.destination_amount, op.destination_asset),
@@ -217,7 +225,9 @@ async def confirm_path_payment_strict_receive_op(
 
 async def confirm_path_payment_strict_send_op(
     op: StellarPathPaymentStrictSendOp,
+    output_index: int,
 ) -> None:
+    # TODO: show output index in the subtitle
     await confirm_output(
         op.destination_account,
         format_amount(op.destination_min, op.destination_asset),
@@ -234,28 +244,13 @@ async def confirm_path_payment_strict_send_op(
     await confirm_asset_issuer(op.send_asset)
 
 
-async def confirm_payment_op(op: StellarPaymentOp) -> None:
-    from trezor.enums import StellarAssetType
-
-    amount = format_amount(op.amount, op.asset)
-    if op.asset.type == StellarAssetType.NATIVE:
-        await confirm_output(op.destination_account, amount, chunkify=True)
-    else:
-        await confirm_address(
-            TR.words__send,
-            op.destination_account,
-            subtitle=TR.send__title_sending_to,
-            br_code=ButtonRequestType.ConfirmOutput,
-        )
-        # Users can only send assets they've already trusted,
-        # so we don't display the issuer by default.
-        if await should_show_more(
-            TR.words__amount,
-            ((amount, False),),
-            TR.stellar__token_info,
-            br_code=ButtonRequestType.ConfirmOutput,
-        ):
-            await confirm_asset_issuer(op.asset)
+async def confirm_payment_op(op: StellarPaymentOp, output_index: int) -> None:
+    await confirm_stellar_output(
+        op.destination_account,
+        format_amount(op.amount, op.asset),
+        output_index,
+        op.asset,
+    )
 
 
 async def confirm_set_options_op(op: StellarSetOptionsOp) -> None:
