@@ -29,7 +29,7 @@ async def get_address(msg: StellarGetAddress, keychain: Keychain) -> StellarAddr
     if msg.show_display:
         from . import PATTERN, SLIP44_ID
 
-        coin = "XLM"
+        coin = "Stellar"
         await show_address(
             address,
             subtitle=TR.address__coin_address_template.format(coin),
