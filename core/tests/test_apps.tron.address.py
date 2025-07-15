@@ -3,6 +3,7 @@ from common import *  # isort:skip
 
 if not utils.BITCOIN_ONLY:
     from apps.tron.helpers import address_from_public_key
+    from apps.tron.writers import encode_varint
 
 
 @unittest.skipUnless(not utils.BITCOIN_ONLY, "altcoin")
@@ -28,6 +29,14 @@ class TestTronAddress(unittest.TestCase):
             )
         )
         self.assertEqual(addr, "TL4A3PZDdZxZnsk7ZsVgo5ztWaZqWLQT8i")
+
+    def test_encode_varint(self):
+        self.assertEqual(encode_varint(0), b"\x00")
+        self.assertEqual(encode_varint(1), b"\x01")
+        self.assertEqual(encode_varint(127), b"\x7f")
+        self.assertEqual(encode_varint(128), b"\x80\x01")
+        self.assertEqual(encode_varint(300), b"\xac\x02")
+        self.assertEqual(encode_varint(16384), b"\x80\x80\x01")
 
 
 if __name__ == "__main__":
