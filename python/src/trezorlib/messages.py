@@ -417,7 +417,7 @@ class ThpPairingMethod(IntEnum):
     NFC = 4
 
 
-class TronRawContractType(IntEnum):
+class TRXRawContractType(IntEnum):
     TransferContract = 1
 
 
@@ -8408,14 +8408,14 @@ class TronRawTransaction(protobuf.MessageType):
 class TronRawContract(protobuf.MessageType):
     MESSAGE_WIRE_TYPE = None
     FIELDS = {
-        1: protobuf.Field("type", "TronRawContractType", repeated=False, required=True),
+        1: protobuf.Field("type", "TRXRawContractType", repeated=False, required=True),
         2: protobuf.Field("parameter", "TronRawParameter", repeated=False, required=True),
     }
 
     def __init__(
         self,
         *,
-        type: "TronRawContractType",
+        type: "TRXRawContractType",
         parameter: "TronRawParameter",
     ) -> None:
         self.type = type
