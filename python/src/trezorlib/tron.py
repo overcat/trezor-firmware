@@ -31,7 +31,7 @@ def from_raw_data(
         raise ValueError("Only single contract transactions are supported.")
 
     contract_type = raw_tx.contract[0].type
-    if contract_type == messages.TRXRawContractType.TransferContract:
+    if contract_type == messages.TronRawContractType.TransferContract:
         raw_contract = load_message(
             io.BytesIO(raw_tx.contract[0].parameter.value),
             messages.TronRawTransferContract,

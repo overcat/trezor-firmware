@@ -1790,7 +1790,7 @@ pub mod tron_raw_transaction {
     pub struct TronRawContract {
         // message fields
         // @@protoc_insertion_point(field:hw.trezor.messages.tron.TronRawTransaction.TronRawContract.type)
-        pub type_: ::std::option::Option<::protobuf::EnumOrUnknown<tron_raw_contract::TRXRawContractType>>,
+        pub type_: ::std::option::Option<::protobuf::EnumOrUnknown<tron_raw_contract::TronRawContractType>>,
         // @@protoc_insertion_point(field:hw.trezor.messages.tron.TronRawTransaction.TronRawContract.parameter)
         pub parameter: ::protobuf::MessageField<tron_raw_contract::TronRawParameter>,
         // special fields
@@ -1809,12 +1809,12 @@ pub mod tron_raw_transaction {
             ::std::default::Default::default()
         }
 
-        // required .hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TRXRawContractType type = 1;
+        // required .hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TronRawContractType type = 1;
 
-        pub fn type_(&self) -> tron_raw_contract::TRXRawContractType {
+        pub fn type_(&self) -> tron_raw_contract::TronRawContractType {
             match self.type_ {
-                Some(e) => e.enum_value_or(tron_raw_contract::TRXRawContractType::TransferContract),
-                None => tron_raw_contract::TRXRawContractType::TransferContract,
+                Some(e) => e.enum_value_or(tron_raw_contract::TronRawContractType::TransferContract),
+                None => tron_raw_contract::TronRawContractType::TransferContract,
             }
         }
 
@@ -1827,7 +1827,7 @@ pub mod tron_raw_transaction {
         }
 
         // Param is passed by value, moved
-        pub fn set_type(&mut self, v: tron_raw_contract::TRXRawContractType) {
+        pub fn set_type(&mut self, v: tron_raw_contract::TronRawContractType) {
             self.type_ = ::std::option::Option::Some(::protobuf::EnumOrUnknown::new(v));
         }
 
@@ -2438,62 +2438,62 @@ pub mod tron_raw_transaction {
         }
 
         #[derive(Clone,Copy,PartialEq,Eq,Debug,Hash)]
-        // @@protoc_insertion_point(enum:hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TRXRawContractType)
-        pub enum TRXRawContractType {
-            // @@protoc_insertion_point(enum_value:hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TRXRawContractType.TransferContract)
+        // @@protoc_insertion_point(enum:hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TronRawContractType)
+        pub enum TronRawContractType {
+            // @@protoc_insertion_point(enum_value:hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TronRawContractType.TransferContract)
             TransferContract = 1,
         }
 
-        impl ::protobuf::Enum for TRXRawContractType {
-            const NAME: &'static str = "TRXRawContractType";
+        impl ::protobuf::Enum for TronRawContractType {
+            const NAME: &'static str = "TronRawContractType";
 
             fn value(&self) -> i32 {
                 *self as i32
             }
 
-            fn from_i32(value: i32) -> ::std::option::Option<TRXRawContractType> {
+            fn from_i32(value: i32) -> ::std::option::Option<TronRawContractType> {
                 match value {
-                    1 => ::std::option::Option::Some(TRXRawContractType::TransferContract),
+                    1 => ::std::option::Option::Some(TronRawContractType::TransferContract),
                     _ => ::std::option::Option::None
                 }
             }
 
-            fn from_str(str: &str) -> ::std::option::Option<TRXRawContractType> {
+            fn from_str(str: &str) -> ::std::option::Option<TronRawContractType> {
                 match str {
-                    "TransferContract" => ::std::option::Option::Some(TRXRawContractType::TransferContract),
+                    "TransferContract" => ::std::option::Option::Some(TronRawContractType::TransferContract),
                     _ => ::std::option::Option::None
                 }
             }
 
-            const VALUES: &'static [TRXRawContractType] = &[
-                TRXRawContractType::TransferContract,
+            const VALUES: &'static [TronRawContractType] = &[
+                TronRawContractType::TransferContract,
             ];
         }
 
-        impl ::protobuf::EnumFull for TRXRawContractType {
+        impl ::protobuf::EnumFull for TronRawContractType {
             fn enum_descriptor() -> ::protobuf::reflect::EnumDescriptor {
                 static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::EnumDescriptor> = ::protobuf::rt::Lazy::new();
-                descriptor.get(|| super::super::file_descriptor().enum_by_package_relative_name("TronRawTransaction.TronRawContract.TRXRawContractType").unwrap()).clone()
+                descriptor.get(|| super::super::file_descriptor().enum_by_package_relative_name("TronRawTransaction.TronRawContract.TronRawContractType").unwrap()).clone()
             }
 
             fn descriptor(&self) -> ::protobuf::reflect::EnumValueDescriptor {
                 let index = match self {
-                    TRXRawContractType::TransferContract => 0,
+                    TronRawContractType::TransferContract => 0,
                 };
                 Self::enum_descriptor().value_by_index(index)
             }
         }
 
         // Note, `Default` is implemented although default value is not 0
-        impl ::std::default::Default for TRXRawContractType {
+        impl ::std::default::Default for TronRawContractType {
             fn default() -> Self {
-                TRXRawContractType::TransferContract
+                TronRawContractType::TransferContract
             }
         }
 
-        impl TRXRawContractType {
+        impl TronRawContractType {
             pub(in super::super) fn generated_enum_descriptor_data() -> ::protobuf::reflect::GeneratedEnumDescriptorData {
-                ::protobuf::reflect::GeneratedEnumDescriptorData::new::<TRXRawContractType>("TronRawTransaction.TronRawContract.TRXRawContractType")
+                ::protobuf::reflect::GeneratedEnumDescriptorData::new::<TronRawContractType>("TronRawTransaction.TronRawContract.TronRawContractType")
             }
         }
     }
@@ -2515,24 +2515,24 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     _address\x18\x01\x20\x02(\tR\x0cownerAddress\x12\x1d\n\nto_address\x18\
     \x02\x20\x02(\tR\ttoAddress\x12\x16\n\x06amount\x18\x03\x20\x02(\x12R\
     \x06amount\"-\n\rTronSignature\x12\x1c\n\tsignature\x18\x01\x20\x02(\x0c\
-    R\tsignature\"\xf6\x05\n\x12TronRawTransaction\x12&\n\x0fref_block_bytes\
+    R\tsignature\"\xf8\x05\n\x12TronRawTransaction\x12&\n\x0fref_block_bytes\
     \x18\x01\x20\x02(\x0cR\rrefBlockBytes\x12$\n\x0eref_block_hash\x18\x04\
     \x20\x02(\x0cR\x0crefBlockHash\x12\x1e\n\nexpiration\x18\x08\x20\x02(\
     \x04R\nexpiration\x12\x12\n\x04data\x18\n\x20\x01(\x0cR\x04data\x12W\n\
     \x08contract\x18\x0b\x20\x03(\x0b2;.hw.trezor.messages.tron.TronRawTrans\
     action.TronRawContractR\x08contract\x12\x1c\n\ttimestamp\x18\x0e\x20\x02\
     (\x04R\ttimestamp\x12\x1b\n\tfee_limit\x18\x12\x20\x01(\x04R\x08feeLimit\
-    \x1a\xc9\x03\n\x0fTronRawContract\x12b\n\x04type\x18\x01\x20\x02(\x0e2N.\
-    hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TRXRawContrac\
-    tTypeR\x04type\x12j\n\tparameter\x18\x02\x20\x02(\x0b2L.hw.trezor.messag\
-    es.tron.TronRawTransaction.TronRawContract.TronRawParameterR\tparameter\
+    \x1a\xcb\x03\n\x0fTronRawContract\x12c\n\x04type\x18\x01\x20\x02(\x0e2O.\
+    hw.trezor.messages.tron.TronRawTransaction.TronRawContract.TronRawContra\
+    ctTypeR\x04type\x12j\n\tparameter\x18\x02\x20\x02(\x0b2L.hw.trezor.messa\
+    ges.tron.TronRawTransaction.TronRawContract.TronRawParameterR\tparameter\
     \x1au\n\x17TronRawTransferContract\x12#\n\rowner_address\x18\x01\x20\x02\
     (\x0cR\x0cownerAddress\x12\x1d\n\nto_address\x18\x02\x20\x02(\x0cR\ttoAd\
     dress\x12\x16\n\x06amount\x18\x03\x20\x02(\x04R\x06amount\x1aC\n\x10Tron\
     RawParameter\x12\x19\n\x08type_url\x18\x01\x20\x02(\tR\x07typeUrl\x12\
-    \x14\n\x05value\x18\x02\x20\x02(\x0cR\x05value\"*\n\x12TRXRawContractTyp\
-    e\x12\x14\n\x10TransferContract\x10\x01B8\n#com.satoshilabs.trezor.lib.p\
-    rotobufB\x11TrezorMessageTron\
+    \x14\n\x05value\x18\x02\x20\x02(\x0cR\x05value\"+\n\x13TronRawContractTy\
+    pe\x12\x14\n\x10TransferContract\x10\x01B8\n#com.satoshilabs.trezor.lib.\
+    protobufB\x11TrezorMessageTron\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
@@ -2562,7 +2562,7 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
             messages.push(tron_raw_transaction::tron_raw_contract::TronRawTransferContract::generated_message_descriptor_data());
             messages.push(tron_raw_transaction::tron_raw_contract::TronRawParameter::generated_message_descriptor_data());
             let mut enums = ::std::vec::Vec::with_capacity(1);
-            enums.push(tron_raw_transaction::tron_raw_contract::TRXRawContractType::generated_enum_descriptor_data());
+            enums.push(tron_raw_transaction::tron_raw_contract::TronRawContractType::generated_enum_descriptor_data());
             ::protobuf::reflect::GeneratedFileDescriptor::new_generated(
                 file_descriptor_proto(),
                 deps,

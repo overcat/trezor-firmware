@@ -63,11 +63,11 @@ if TYPE_CHECKING:
     from trezor.enums import StellarAssetType  # noqa: F401
     from trezor.enums import StellarMemoType  # noqa: F401
     from trezor.enums import StellarSignerType  # noqa: F401
-    from trezor.enums import TRXRawContractType  # noqa: F401
     from trezor.enums import TezosBallotType  # noqa: F401
     from trezor.enums import TezosContractType  # noqa: F401
     from trezor.enums import ThpMessageType  # noqa: F401
     from trezor.enums import ThpPairingMethod  # noqa: F401
+    from trezor.enums import TronRawContractType  # noqa: F401
     from trezor.enums import WordRequestType  # noqa: F401
 
     class BenchmarkListNames(protobuf.MessageType):
@@ -6649,13 +6649,13 @@ if TYPE_CHECKING:
             return isinstance(msg, cls)
 
     class TronRawContract(protobuf.MessageType):
-        type: "TRXRawContractType"
+        type: "TronRawContractType"
         parameter: "TronRawParameter"
 
         def __init__(
             self,
             *,
-            type: "TRXRawContractType",
+            type: "TronRawContractType",
             parameter: "TronRawParameter",
         ) -> None:
             pass

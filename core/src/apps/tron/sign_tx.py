@@ -71,7 +71,7 @@ async def process_contract(
     contract: consts.TronMessageType, trezor_address: str
 ) -> tuple[TronRawContract, str]:
     import trezor.messages as messages
-    from trezor.enums import TRXRawContractType
+    from trezor.enums import TronRawContractType
     from trezor.protobuf import dump_message_buffer
 
     from . import converter, layout
@@ -79,7 +79,7 @@ async def process_contract(
     total_send = parameter = contract_type = None
 
     if messages.TronTransferContract.is_type_of(contract):
-        contract_type = TRXRawContractType.TransferContract
+        contract_type = TronRawContractType.TransferContract
         await layout.confirm_transfer_contract(contract, trezor_address)
         parameter = converter.convert_transfer_contract(contract)
         total_send = layout.format_trx_amount(contract.amount)

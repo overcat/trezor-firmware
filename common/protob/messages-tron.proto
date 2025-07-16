@@ -97,11 +97,10 @@ message TronRawTransaction {
             required bytes value = 2;     // The serialized value of the contract parameter, e.g., TronTransferContract
         }
 
-        required TRXRawContractType type = 1;
+        required TronRawContractType type = 1;
         required TronRawParameter parameter = 2;
 
-        // It should be called `TronRawContractType`, but this causes the build to fail, and I don't know why.
-        enum TRXRawContractType {
+        enum TronRawContractType {
             TransferContract = 1;
         }
     }

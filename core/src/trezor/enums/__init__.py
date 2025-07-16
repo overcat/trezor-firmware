@@ -365,7 +365,7 @@ if TYPE_CHECKING:
         QrCode = 3
         NFC = 4
 
-    class TRXRawContractType(IntEnum):
+    class TronRawContractType(IntEnum):
         TransferContract = 1
 
     class MessageType(IntEnum):
