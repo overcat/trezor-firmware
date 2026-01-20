@@ -1237,5 +1237,11 @@
   "1235": "tron__claim_unfrozen_balance",
   "1236": "tron__claim_voting_rewards",
   "1237": "address__warning_not_yours",
-  "1238": "tron__owner_address"
+  "1238": "tron__owner_address",
+  "1239": "stellar__arguments",
+  "1240": "stellar__authorization",
+  "1241": "stellar__ext_auth",
+  "1242": "stellar__ext_auth_message",
+  "1243": "stellar__function",
+  "1244": "stellar__invoke_contract"
 }

@@ -1473,6 +1473,8 @@ static void _librust_qstrs(void) {
   MP_QSTR_stellar__add_trust;
   MP_QSTR_stellar__all_will_be_sent_to;
   MP_QSTR_stellar__allow_trust;
+  MP_QSTR_stellar__arguments;
+  MP_QSTR_stellar__authorization;
   MP_QSTR_stellar__balance_id;
   MP_QSTR_stellar__bump_sequence;
   MP_QSTR_stellar__buying;
@@ -1490,11 +1492,15 @@ static void _librust_qstrs(void) {
   MP_QSTR_stellar__delete_trust;
   MP_QSTR_stellar__destination;
   MP_QSTR_stellar__exchanges_require_memo;
+  MP_QSTR_stellar__ext_auth;
+  MP_QSTR_stellar__ext_auth_message;
   MP_QSTR_stellar__final_confirm;
+  MP_QSTR_stellar__function;
   MP_QSTR_stellar__hash;
   MP_QSTR_stellar__high;
   MP_QSTR_stellar__home_domain;
   MP_QSTR_stellar__inflation;
+  MP_QSTR_stellar__invoke_contract;
   MP_QSTR_stellar__issuer_template;
   MP_QSTR_stellar__key;
   MP_QSTR_stellar__limit;
