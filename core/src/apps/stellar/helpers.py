@@ -61,7 +61,10 @@ def decode_strkey(strkey: str) -> tuple[int, bytes]:
     """
     from trezor.wire import DataError
 
-    b = base32.decode(strkey + "=" * (-len(strkey) % 8))
+    try:
+        b = base32.decode(strkey + "=" * (-len(strkey) % 8))
+    except ValueError:
+        raise DataError("Strkey not base32-encoded")
     if _crc16_checksum(b[:-2]) != b[-2:]:
         raise DataError("Invalid strkey checksum")
     version = b[0] >> 3
