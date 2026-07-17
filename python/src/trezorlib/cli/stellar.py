@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING
 
 import click
 
-from .. import stellar, tools
+from .. import messages, stellar, tools
 from . import with_session
 
 if TYPE_CHECKING:
@@ -28,9 +28,11 @@ if TYPE_CHECKING:
 
 try:
     from stellar_sdk import (
+        Address,
         FeeBumpTransactionEnvelope,
         parse_transaction_envelope_from_xdr,
     )
+    from stellar_sdk import xdr as stellar_xdr
 except ImportError:
     pass
 
@@ -113,4 +115,88 @@ def sign_transaction(
         session, tx, operations, tx_ext, address_n, network_passphrase
     )
 
+    return base64.b64encode(resp.signature)
+
+
+@cli.command()
+@click.option(
+    "-n",
+    "--address",
+    required=False,
+    help=PATH_HELP,
+    default=stellar.DEFAULT_BIP32_PATH,
+)
+@click.option(
+    "-p",
+    "--network-passphrase",
+    default=stellar.DEFAULT_NETWORK_PASSPHRASE,
+    required=False,
+    help="Network passphrase (blank for public network).",
+)
+@click.option(
+    "-l",
+    "--valid-until-ledger",
+    type=int,
+    required=True,
+    help="Ledger sequence through which the authorization remains valid.",
+)
+@click.argument("b64entry")
+@with_session
+def sign_soroban_authorization(
+    session: "Session",
+    b64entry: str,
+    address: str,
+    network_passphrase: str,
+    valid_until_ledger: int,
+) -> bytes:
+    """Sign a base64-encoded Soroban authorization entry.
+
+    Takes an unsigned SorobanAuthorizationEntry XDR with
+    SOROBAN_CREDENTIALS_ADDRESS_V2 credentials (Protocol 27) and returns the
+    base64-encoded signature of its authorization payload.
+    """
+    if not stellar.HAVE_STELLAR_SDK:
+        click.echo("Stellar requirements not installed.")
+        click.echo("Please run:")
+        click.echo()
+        click.echo("  pip install stellar-sdk")
+        sys.exit(1)
+    if not stellar.HAVE_STELLAR_SDK_PROTOCOL_27:
+        click.echo("Signing authorization entries requires Protocol 27 support.")
+        click.echo("Please run:")
+        click.echo()
+        click.echo("  pip install 'stellar-sdk>=15'")
+        sys.exit(1)
+    try:
+        entry = stellar_xdr.SorobanAuthorizationEntry.from_xdr(b64entry)
+    except Exception as e:
+        click.echo(
+            f"Failed to parse XDR: {e}\n"
+            "Make sure to pass a valid SorobanAuthorizationEntry object.\n"
+        )
+        sys.exit(1)
+
+    credentials = entry.credentials
+    if (
+        credentials.type
+        != stellar_xdr.SorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2
+    ):
+        click.echo(f"Unsupported SorobanCredentials type: {credentials.type}.")
+        click.echo("Only SOROBAN_CREDENTIALS_ADDRESS_V2 entries can be signed.")
+        sys.exit(1)
+    address_credentials = credentials.address_v2
+    assert address_credentials is not None
+
+    address_n = tools.parse_path(address)
+    resp = stellar.sign_soroban_authorization(
+        session,
+        address_n,
+        network_passphrase,
+        messages.StellarSorobanAuthorizationWithAddress(
+            nonce=address_credentials.nonce.int64,
+            signature_expiration_ledger=valid_until_ledger,
+            address=Address.from_xdr_sc_address(address_credentials.address).address,
+            invocation=stellar._read_authorized_invocation(entry.root_invocation),
+        ),
+    )
     return base64.b64encode(resp.signature)

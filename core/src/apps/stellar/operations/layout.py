@@ -576,6 +576,17 @@ async def _confirm_auth_entry(
     await _confirm_invocation(auth.root_invocation, str(position), is_root=is_root)
 
 
+async def confirm_authorized_invocation(
+    invocation: StellarSorobanAuthorizedInvocation,
+) -> None:
+    """Confirm a standalone authorized invocation tree (auth entry signing).
+
+    Unlike in a transaction, there is always exactly one entry being signed, so
+    its root is not numbered; sub-invocations are numbered relative to it.
+    """
+    await _confirm_invocation(invocation, "")
+
+
 async def _confirm_invocation(
     invocation: StellarSorobanAuthorizedInvocation, position: str, is_root: bool = False
 ) -> None:
@@ -583,7 +594,8 @@ async def _confirm_invocation(
 
     The whole authorization tree is shown by default (it is security-critical and
     can differ from the host function being invoked). `position` is the path in
-    the auth tree (e.g. "1", "1-2", "1-2-1").
+    the auth tree (e.g. "1", "1-2", "1-2-1"), or empty for the unnumbered root
+    of a standalone authorization entry.
     """
     from trezor.enums import StellarSorobanAuthorizedFunctionType
 
@@ -596,7 +608,10 @@ async def _confirm_invocation(
     if func.contract_fn is None:
         raise DataError("Stellar: missing contract_fn")
 
-    title = f"{TR.stellar__authorization} {position}"
+    if position:
+        title = f"{TR.stellar__authorization} {position}"
+    else:
+        title = TR.stellar__authorization
 
     if not is_root:
         await _confirm_invoke_contract_args(
@@ -606,7 +621,8 @@ async def _confirm_invocation(
         )
 
     for i, sub in enumerate(invocation.sub_invocations):
-        await _confirm_invocation(sub, f"{position}-{i + 1}")
+        sub_position = f"{position}-{i + 1}" if position else str(i + 1)
+        await _confirm_invocation(sub, sub_position)
 
 
 def _escape_str(s: str) -> str:

@@ -77,10 +77,17 @@ try:
     )
 
     HAVE_STELLAR_SDK = True
+    # Protocol 27 XDR (SOROBAN_CREDENTIALS_ADDRESS_V2 etc.) is only available
+    # in stellar-sdk >= 15; on Python 3.9 the `stellar` extra installs
+    # stellar-sdk 13 (see pyproject.toml), which lacks it.
+    HAVE_STELLAR_SDK_PROTOCOL_27 = hasattr(
+        xdr.SorobanCredentialsType, "SOROBAN_CREDENTIALS_ADDRESS_V2"
+    )
     DEFAULT_NETWORK_PASSPHRASE = Network.PUBLIC_NETWORK_PASSPHRASE
 
 except ImportError:
     HAVE_STELLAR_SDK = False
+    HAVE_STELLAR_SDK_PROTOCOL_27 = False
     DEFAULT_NETWORK_PASSPHRASE = "Public Global Stellar Network ; September 2015"
 
 DEFAULT_BIP32_PATH = "m/44h/148h/0h"
@@ -405,6 +412,25 @@ def sign_tx(
         )
 
     return resp
+
+
+@workflow(capability=messages.Capability.Stellar)
+def sign_soroban_authorization(
+    session: "Session",
+    address_n: "Address",
+    network_passphrase: str,
+    authorization: messages.StellarSorobanAuthorizationWithAddress,
+) -> messages.StellarSorobanAuthorizationSignature:
+    """Sign a Soroban authorization on the device."""
+    return session.call(
+        messages.StellarSignSorobanAuthorization(
+            address_n=address_n,
+            network_passphrase=network_passphrase,
+            envelope_type=messages.StellarSorobanAuthorizationEnvelopeType.ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS,
+            soroban_authorization_with_address=authorization,
+        ),
+        expect=messages.StellarSorobanAuthorizationSignature,
+    )
 
 
 def _read_sc_address(address: "xdr.SCAddress") -> str:
