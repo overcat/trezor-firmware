@@ -602,12 +602,18 @@ def _read_credentials(
         return messages.StellarSorobanCredentials(
             type=messages.StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_SOURCE_ACCOUNT
         )
-    elif credentials.type == xdr.SorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS:
+    elif (
+        HAVE_STELLAR_SDK_PROTOCOL_27
+        and credentials.type
+        == xdr.SorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2
+    ):
         return messages.StellarSorobanCredentials(
-            type=messages.StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS,
-            address=_read_address_credentials(credentials.address),
+            type=messages.StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2,
+            address_v2=_read_address_credentials(credentials.address_v2),
         )
     else:
+        # The legacy, to-be-deprecated SOROBAN_CREDENTIALS_ADDRESS is
+        # intentionally not supported.
         raise ValueError(f"Unsupported SorobanCredentials type: {credentials.type}")
 
 
