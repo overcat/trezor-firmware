@@ -16,7 +16,7 @@
 
 import base64
 import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import click
 
@@ -132,6 +132,14 @@ def sign_transaction(
     required=False,
     help="Network passphrase (blank for public network).",
 )
+@click.option(
+    "-l",
+    "--valid-until-ledger",
+    type=int,
+    default=None,
+    help="Override the entry's signature_expiration_ledger "
+    "(the last ledger sequence at which the authorization is valid).",
+)
 @click.argument("b64entry")
 @with_session
 def sign_soroban_authorization(
@@ -139,14 +147,15 @@ def sign_soroban_authorization(
     b64entry: str,
     address: str,
     network_passphrase: str,
+    valid_until_ledger: Optional[int],
 ) -> bytes:
     """Sign a base64-encoded Soroban authorization entry.
 
     Takes an unsigned SorobanAuthorizationEntry XDR with
     SOROBAN_CREDENTIALS_ADDRESS_V2 credentials (Protocol 27) and returns the
-    base64-encoded signature of its authorization payload. The entry's
-    signature_expiration_ledger must already be set to the intended value;
-    the signed payload commits to it.
+    base64-encoded signature of its authorization payload. The signed payload
+    commits to the entry's signature_expiration_ledger; it must already be
+    set to the intended value, or overridden with --valid-until-ledger.
     """
     if not stellar.HAVE_STELLAR_SDK:
         click.echo("Stellar requirements not installed.")
@@ -178,6 +187,12 @@ def sign_soroban_authorization(
         )
         click.echo("Only SOROBAN_CREDENTIALS_ADDRESS_V2 entries can be signed.")
         sys.exit(1)
+
+    if valid_until_ledger is not None:
+        assert entry_xdr.credentials.address_v2 is not None
+        entry_xdr.credentials.address_v2.signature_expiration_ledger = (
+            stellar_xdr.Uint32(valid_until_ledger)
+        )
 
     address_n = tools.parse_path(address)
     resp = stellar.sign_soroban_authorization(
