@@ -162,11 +162,30 @@ def from_envelope(
 
 def from_authorization_entry(
     entry: "xdr.SorobanAuthorizationEntry",
-) -> messages.StellarSorobanAuthorizationEntry:
-    """Parse a Soroban authorization entry into its protobuf representation."""
+) -> messages.StellarSorobanAuthorizationWithAddress:
+    """Translate a Soroban authorization entry into its signing request payload.
+
+    The resulting message carries exactly the fields committed into the
+    entry's authorization payload (the WITH_ADDRESS preimage of Protocol 27).
+    Only SOROBAN_CREDENTIALS_ADDRESS_V2 entries are supported.
+    """
     if not HAVE_STELLAR_SDK:
         raise RuntimeError("Stellar SDK not available")
-    return _read_authorization_entry(entry)
+    if not HAVE_STELLAR_SDK_PROTOCOL_27 or (
+        entry.credentials.type
+        != xdr.SorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2
+    ):
+        raise ValueError(
+            f"Unsupported SorobanCredentials type: {entry.credentials.type}"
+        )
+    credentials = entry.credentials.address_v2
+    assert credentials is not None
+    return messages.StellarSorobanAuthorizationWithAddress(
+        nonce=credentials.nonce.int64,
+        signature_expiration_ledger=credentials.signature_expiration_ledger.uint32,
+        address=_read_sc_address(credentials.address),
+        invocation=_read_authorized_invocation(entry.root_invocation),
+    )
 
 
 def _read_operation(op: "Operation") -> "StellarMessageType":
@@ -428,14 +447,15 @@ def sign_soroban_authorization(
     session: "Session",
     address_n: "Address",
     network_passphrase: str,
-    entry: messages.StellarSorobanAuthorizationEntry,
+    authorization: messages.StellarSorobanAuthorizationWithAddress,
 ) -> messages.StellarSorobanAuthorizationSignature:
-    """Sign a Soroban authorization entry on the device."""
+    """Sign a Soroban authorization on the device."""
     return session.call(
         messages.StellarSignSorobanAuthorization(
             address_n=address_n,
             network_passphrase=network_passphrase,
-            entry=entry,
+            envelope_type=messages.StellarSorobanAuthorizationEnvelopeType.ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS,
+            soroban_authorization_with_address=authorization,
         ),
         expect=messages.StellarSorobanAuthorizationSignature,
     )

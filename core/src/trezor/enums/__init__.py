@@ -414,6 +414,9 @@ if TYPE_CHECKING:
         SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0
         SOROBAN_CREDENTIALS_ADDRESS_V2 = 2
 
+    class StellarSorobanAuthorizationEnvelopeType(IntEnum):
+        ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS = 10
+
     class TezosContractType(IntEnum):
         Implicit = 0
         Originated = 1

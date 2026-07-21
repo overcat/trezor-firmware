@@ -72,6 +72,7 @@ if TYPE_CHECKING:
     from trezor.enums import StellarMemoType  # noqa: F401
     from trezor.enums import StellarSCValType  # noqa: F401
     from trezor.enums import StellarSignerType  # noqa: F401
+    from trezor.enums import StellarSorobanAuthorizationEnvelopeType  # noqa: F401
     from trezor.enums import StellarSorobanAuthorizedFunctionType  # noqa: F401
     from trezor.enums import StellarSorobanCredentialsType  # noqa: F401
     from trezor.enums import TezosBallotType  # noqa: F401
@@ -6761,14 +6762,16 @@ if TYPE_CHECKING:
     class StellarSignSorobanAuthorization(protobuf.MessageType):
         address_n: "list[int]"
         network_passphrase: "str"
-        entry: "StellarSorobanAuthorizationEntry"
+        envelope_type: "StellarSorobanAuthorizationEnvelopeType"
+        soroban_authorization_with_address: "StellarSorobanAuthorizationWithAddress | None"
 
         def __init__(
             self,
             *,
             network_passphrase: "str",
-            entry: "StellarSorobanAuthorizationEntry",
+            envelope_type: "StellarSorobanAuthorizationEnvelopeType",
             address_n: "list[int] | None" = None,
+            soroban_authorization_with_address: "StellarSorobanAuthorizationWithAddress | None" = None,
         ) -> None:
             pass
 
@@ -6900,6 +6903,26 @@ if TYPE_CHECKING:
 
         @classmethod
         def is_type_of(cls, msg: Any) -> TypeGuard["StellarSCValMapEntry"]:
+            return isinstance(msg, cls)
+
+    class StellarSorobanAuthorizationWithAddress(protobuf.MessageType):
+        nonce: "int"
+        signature_expiration_ledger: "int"
+        address: "str"
+        invocation: "StellarSorobanAuthorizedInvocation"
+
+        def __init__(
+            self,
+            *,
+            nonce: "int",
+            signature_expiration_ledger: "int",
+            address: "str",
+            invocation: "StellarSorobanAuthorizedInvocation",
+        ) -> None:
+            pass
+
+        @classmethod
+        def is_type_of(cls, msg: Any) -> TypeGuard["StellarSorobanAuthorizationWithAddress"]:
             return isinstance(msg, cls)
 
     class TelemetryGet(protobuf.MessageType):
