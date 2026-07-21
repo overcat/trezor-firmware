@@ -184,6 +184,6 @@ def sign_soroban_authorization(
         session,
         address_n,
         network_passphrase,
-        stellar._read_authorization_entry(entry_xdr),
+        stellar.from_authorization_entry(entry_xdr),
     )
     return base64.b64encode(resp.signature)

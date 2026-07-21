@@ -160,6 +160,15 @@ def from_envelope(
     return tx, operations, tx_ext
 
 
+def from_authorization_entry(
+    entry: "xdr.SorobanAuthorizationEntry",
+) -> messages.StellarSorobanAuthorizationEntry:
+    """Parse a Soroban authorization entry into its protobuf representation."""
+    if not HAVE_STELLAR_SDK:
+        raise RuntimeError("Stellar SDK not available")
+    return _read_authorization_entry(entry)
+
+
 def _read_operation(op: "Operation") -> "StellarMessageType":
     # TODO: Let's add muxed account support later.
     if op.source:
