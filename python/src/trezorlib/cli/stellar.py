@@ -132,13 +132,6 @@ def sign_transaction(
     required=False,
     help="Network passphrase (blank for public network).",
 )
-@click.option(
-    "-l",
-    "--valid-until-ledger",
-    type=int,
-    required=True,
-    help="Ledger sequence through which the authorization remains valid.",
-)
 @click.argument("b64entry")
 @with_session
 def sign_soroban_authorization(
@@ -146,13 +139,14 @@ def sign_soroban_authorization(
     b64entry: str,
     address: str,
     network_passphrase: str,
-    valid_until_ledger: int,
 ) -> bytes:
     """Sign a base64-encoded Soroban authorization entry.
 
     Takes an unsigned SorobanAuthorizationEntry XDR with
     SOROBAN_CREDENTIALS_ADDRESS_V2 credentials (Protocol 27) and returns the
-    base64-encoded signature of its authorization payload.
+    base64-encoded signature of its authorization payload. The entry's
+    signature_expiration_ledger must already be set to the intended value;
+    the signed payload commits to it.
     """
     if not stellar.HAVE_STELLAR_SDK:
         click.echo("Stellar requirements not installed.")
@@ -185,12 +179,11 @@ def sign_soroban_authorization(
         click.echo("Only SOROBAN_CREDENTIALS_ADDRESS_V2 entries can be signed.")
         sys.exit(1)
 
-    entry = stellar._read_authorization_entry(entry_xdr)
-    assert entry.credentials.address_v2 is not None
-    entry.credentials.address_v2.signature_expiration_ledger = valid_until_ledger
-
     address_n = tools.parse_path(address)
     resp = stellar.sign_soroban_authorization(
-        session, address_n, network_passphrase, entry
+        session,
+        address_n,
+        network_passphrase,
+        stellar._read_authorization_entry(entry_xdr),
     )
     return base64.b64encode(resp.signature)
