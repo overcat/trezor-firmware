@@ -19,7 +19,7 @@ async def sign_soroban_authorization(
 ) -> StellarSorobanAuthorizationSignature:
     from trezor.crypto.curve import ed25519
     from trezor.crypto.hashlib import sha256
-    from trezor.enums import StellarSorobanAuthorizationEnvelopeType
+    from trezor.enums import StellarSCValType, StellarSorobanCredentialsType
     from trezor.messages import StellarSorobanAuthorizationSignature
     from trezor.wire import DataError, ProcessError
 
@@ -38,25 +38,30 @@ async def sign_soroban_authorization(
     pubkey = seed.remove_ed25519_prefix(node.public_key())
     signing_address = helpers.address_from_public_key(pubkey)
 
-    # Only the address-bound preimage variant introduced in Protocol 27 is supported
+    # Only SOROBAN_CREDENTIALS_ADDRESS_V2 credentials can be signed separately.
     if (
-        msg.envelope_type
-        != StellarSorobanAuthorizationEnvelopeType.ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS
+        msg.entry.credentials.type
+        != StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2
     ):
-        raise ProcessError("Stellar: unsupported authorization envelope type")
-    auth = msg.soroban_authorization_with_address
+        raise ProcessError("Stellar: unsupported credentials type")
+    auth = msg.entry.credentials.address_v2
     if auth is None:
-        raise DataError("Stellar: missing soroban_authorization_with_address")
+        raise DataError("Stellar: missing address credentials")
+    if auth.signature.type != StellarSCValType.SCV_VOID:
+        raise DataError("Stellar: credentials are already signed")
 
+    # Serialize the ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS preimage
+    # (Protocol 27, CAP-46-11/CAP-71), the payload signed for ADDRESS_V2
+    # credentials. It binds the signature to the authorizing address.
     w = bytearray()
-    writers.write_uint32(w, msg.envelope_type)
+    writers.write_uint32(w, 10)  # ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS
     writers.write_bytes_fixed(
         w, sha256(msg.network_passphrase.encode()).digest(), 32  # network id
     )
     writers.write_int64(w, auth.nonce)
     writers.write_uint32(w, auth.signature_expiration_ledger)
     write_sc_address(w, auth.address)
-    write_soroban_authorized_invocation(w, auth.invocation)
+    write_soroban_authorized_invocation(w, msg.entry.root_invocation)
 
     await layout.require_confirm_auth_signing_address(signing_address)
 
@@ -65,7 +70,7 @@ async def sign_soroban_authorization(
         # which the device account is a signer.
         await layout.require_confirm_auth_on_behalf_of(auth.address)
 
-    await confirm_authorized_invocation(auth.invocation)
+    await confirm_authorized_invocation(msg.entry.root_invocation)
     await layout.require_confirm_signature_expiration_ledger(
         auth.signature_expiration_ledger
     )

@@ -419,15 +419,14 @@ def sign_soroban_authorization(
     session: "Session",
     address_n: "Address",
     network_passphrase: str,
-    authorization: messages.StellarSorobanAuthorizationWithAddress,
+    entry: messages.StellarSorobanAuthorizationEntry,
 ) -> messages.StellarSorobanAuthorizationSignature:
-    """Sign a Soroban authorization on the device."""
+    """Sign a Soroban authorization entry on the device."""
     return session.call(
         messages.StellarSignSorobanAuthorization(
             address_n=address_n,
             network_passphrase=network_passphrase,
-            envelope_type=messages.StellarSorobanAuthorizationEnvelopeType.ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS,
-            soroban_authorization_with_address=authorization,
+            entry=entry,
         ),
         expect=messages.StellarSorobanAuthorizationSignature,
     )

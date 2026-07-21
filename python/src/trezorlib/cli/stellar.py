@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING
 
 import click
 
-from .. import messages, stellar, tools
+from .. import stellar, tools
 from . import with_session
 
 if TYPE_CHECKING:
@@ -28,7 +28,6 @@ if TYPE_CHECKING:
 
 try:
     from stellar_sdk import (
-        Address,
         FeeBumpTransactionEnvelope,
         parse_transaction_envelope_from_xdr,
     )
@@ -176,27 +175,20 @@ def sign_soroban_authorization(
         )
         sys.exit(1)
 
-    credentials = entry.credentials
     if (
-        credentials.type
+        entry.credentials.type
         != stellar_xdr.SorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2
     ):
-        click.echo(f"Unsupported SorobanCredentials type: {credentials.type}.")
+        click.echo(f"Unsupported SorobanCredentials type: {entry.credentials.type}.")
         click.echo("Only SOROBAN_CREDENTIALS_ADDRESS_V2 entries can be signed.")
         sys.exit(1)
-    address_credentials = credentials.address_v2
-    assert address_credentials is not None
+
+    entry_pb = stellar._read_authorization_entry(entry)
+    assert entry_pb.credentials.address_v2 is not None
+    entry_pb.credentials.address_v2.signature_expiration_ledger = valid_until_ledger
 
     address_n = tools.parse_path(address)
     resp = stellar.sign_soroban_authorization(
-        session,
-        address_n,
-        network_passphrase,
-        messages.StellarSorobanAuthorizationWithAddress(
-            nonce=address_credentials.nonce.int64,
-            signature_expiration_ledger=valid_until_ledger,
-            address=Address.from_xdr_sc_address(address_credentials.address).address,
-            invocation=stellar._read_authorized_invocation(entry.root_invocation),
-        ),
+        session, address_n, network_passphrase, entry_pb
     )
     return base64.b64encode(resp.signature)

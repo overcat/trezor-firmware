@@ -480,33 +480,23 @@ message StellarInvokeHostFunctionOp {
 
 /**
  * Request: ask device to sign a Soroban authorization entry
- * The device signs the HashIDPreimage variant selected by envelope_type.
- * Currently only ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS is supported,
- * which binds the signature to the authorizing address, as required
- * by SOROBAN_CREDENTIALS_ADDRESS_V2 credentials.
+ * The HashIDPreimage variant to sign is determined by the entry's credentials
+ * type. Only SOROBAN_CREDENTIALS_ADDRESS_V2 is supported: the device signs the
+ * ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS payload, which binds the
+ * signature to the authorizing address. The credentials' signature must be
+ * void (the entry is not signed yet); the credentials' address does not have
+ * to be the device account, e.g. a contract account of which the device is
+ * a signer, or, for a CAP-71 delegate signature, the entry's top-level address.
  * @start
  * @next StellarSorobanAuthorizationSignature
  * @next Failure
  */
 message StellarSignSorobanAuthorization {
     repeated uint32 address_n = 1;  // BIP-32 path. For compatibility with other wallets, must be m/44'/148'/index'
+    // passphrase of the network the authorization is valid on; the preimage's
+    // networkID is derived from it
     required string network_passphrase = 2;
-    required StellarSorobanAuthorizationEnvelopeType envelope_type = 3;  // the HashIDPreimage variant to sign
-    optional StellarSorobanAuthorizationWithAddress soroban_authorization_with_address = 4;  // union arm for ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS
-
-    // https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-transaction.x#L753
-    message StellarSorobanAuthorizationWithAddress {
-        required sint64 nonce = 1;  // replay-protection nonce of the credentials
-        required uint32 signature_expiration_ledger = 2;  // ledger sequence until which the authorization remains valid
-        required string address = 3;  // The address whose credentials are being provided: either the device account itself, or e.g. a contract account of which the device is a signer.
-        required StellarSorobanAuthorizedInvocation invocation = 4;  // the authorized invocation tree
-    }
-
-    // Soroban authorization cases of the EnvelopeType XDR enum, see
-    // https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-ledger-entries.x#L656
-    enum StellarSorobanAuthorizationEnvelopeType {
-        ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS = 10;
-    }
+    required StellarSorobanAuthorizationEntry entry = 3;  // the unsigned authorization entry to sign
 }
 
 /**

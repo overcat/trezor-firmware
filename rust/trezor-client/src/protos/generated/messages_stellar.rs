@@ -9384,8 +9384,8 @@ pub struct StellarSorobanCredentials {
     // message fields
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSorobanCredentials.type)
     pub type_: ::std::option::Option<::protobuf::EnumOrUnknown<stellar_soroban_credentials::StellarSorobanCredentialsType>>,
-    // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSorobanCredentials.address)
-    pub address: ::protobuf::MessageField<StellarSorobanAddressCredentials>,
+    // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSorobanCredentials.address_v2)
+    pub address_v2: ::protobuf::MessageField<StellarSorobanAddressCredentials>,
     // special fields
     // @@protoc_insertion_point(special_field:hw.trezor.messages.stellar.StellarSorobanCredentials.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -9433,9 +9433,9 @@ impl StellarSorobanCredentials {
             |m: &mut StellarSorobanCredentials| { &mut m.type_ },
         ));
         fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, StellarSorobanAddressCredentials>(
-            "address",
-            |m: &StellarSorobanCredentials| { &m.address },
-            |m: &mut StellarSorobanCredentials| { &mut m.address },
+            "address_v2",
+            |m: &StellarSorobanCredentials| { &m.address_v2 },
+            |m: &mut StellarSorobanCredentials| { &mut m.address_v2 },
         ));
         ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<StellarSorobanCredentials>(
             "StellarSorobanCredentials",
@@ -9452,7 +9452,7 @@ impl ::protobuf::Message for StellarSorobanCredentials {
         if self.type_.is_none() {
             return false;
         }
-        for v in &self.address {
+        for v in &self.address_v2 {
             if !v.is_initialized() {
                 return false;
             }
@@ -9467,7 +9467,7 @@ impl ::protobuf::Message for StellarSorobanCredentials {
                     self.type_ = ::std::option::Option::Some(is.read_enum_or_unknown()?);
                 },
                 18 => {
-                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.address)?;
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.address_v2)?;
                 },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
@@ -9484,7 +9484,7 @@ impl ::protobuf::Message for StellarSorobanCredentials {
         if let Some(v) = self.type_ {
             my_size += ::protobuf::rt::int32_size(1, v.value());
         }
-        if let Some(v) = self.address.as_ref() {
+        if let Some(v) = self.address_v2.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
         }
@@ -9497,7 +9497,7 @@ impl ::protobuf::Message for StellarSorobanCredentials {
         if let Some(v) = self.type_ {
             os.write_enum(1, ::protobuf::EnumOrUnknown::value(&v))?;
         }
-        if let Some(v) = self.address.as_ref() {
+        if let Some(v) = self.address_v2.as_ref() {
             ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
         }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
@@ -9518,14 +9518,14 @@ impl ::protobuf::Message for StellarSorobanCredentials {
 
     fn clear(&mut self) {
         self.type_ = ::std::option::Option::None;
-        self.address.clear();
+        self.address_v2.clear();
         self.special_fields.clear();
     }
 
     fn default_instance() -> &'static StellarSorobanCredentials {
         static instance: StellarSorobanCredentials = StellarSorobanCredentials {
             type_: ::std::option::Option::None,
-            address: ::protobuf::MessageField::none(),
+            address_v2: ::protobuf::MessageField::none(),
             special_fields: ::protobuf::SpecialFields::new(),
         };
         &instance
@@ -9556,8 +9556,8 @@ pub mod stellar_soroban_credentials {
     pub enum StellarSorobanCredentialsType {
         // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSorobanCredentials.StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_SOURCE_ACCOUNT)
         SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0,
-        // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSorobanCredentials.StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS)
-        SOROBAN_CREDENTIALS_ADDRESS = 1,
+        // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSorobanCredentials.StellarSorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2)
+        SOROBAN_CREDENTIALS_ADDRESS_V2 = 2,
     }
 
     impl ::protobuf::Enum for StellarSorobanCredentialsType {
@@ -9570,7 +9570,7 @@ pub mod stellar_soroban_credentials {
         fn from_i32(value: i32) -> ::std::option::Option<StellarSorobanCredentialsType> {
             match value {
                 0 => ::std::option::Option::Some(StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_SOURCE_ACCOUNT),
-                1 => ::std::option::Option::Some(StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_ADDRESS),
+                2 => ::std::option::Option::Some(StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_ADDRESS_V2),
                 _ => ::std::option::Option::None
             }
         }
@@ -9578,14 +9578,14 @@ pub mod stellar_soroban_credentials {
         fn from_str(str: &str) -> ::std::option::Option<StellarSorobanCredentialsType> {
             match str {
                 "SOROBAN_CREDENTIALS_SOURCE_ACCOUNT" => ::std::option::Option::Some(StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_SOURCE_ACCOUNT),
-                "SOROBAN_CREDENTIALS_ADDRESS" => ::std::option::Option::Some(StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_ADDRESS),
+                "SOROBAN_CREDENTIALS_ADDRESS_V2" => ::std::option::Option::Some(StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_ADDRESS_V2),
                 _ => ::std::option::Option::None
             }
         }
 
         const VALUES: &'static [StellarSorobanCredentialsType] = &[
             StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_SOURCE_ACCOUNT,
-            StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_ADDRESS,
+            StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_ADDRESS_V2,
         ];
     }
 
@@ -9596,7 +9596,10 @@ pub mod stellar_soroban_credentials {
         }
 
         fn descriptor(&self) -> ::protobuf::reflect::EnumValueDescriptor {
-            let index = *self as usize;
+            let index = match self {
+                StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_SOURCE_ACCOUNT => 0,
+                StellarSorobanCredentialsType::SOROBAN_CREDENTIALS_ADDRESS_V2 => 1,
+            };
             Self::enum_descriptor().value_by_index(index)
         }
     }
@@ -9989,10 +9992,8 @@ pub struct StellarSignSorobanAuthorization {
     pub address_n: ::std::vec::Vec<u32>,
     // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.network_passphrase)
     pub network_passphrase: ::std::option::Option<::std::string::String>,
-    // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.envelope_type)
-    pub envelope_type: ::std::option::Option<::protobuf::EnumOrUnknown<stellar_sign_soroban_authorization::StellarSorobanAuthorizationEnvelopeType>>,
-    // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.soroban_authorization_with_address)
-    pub soroban_authorization_with_address: ::protobuf::MessageField<stellar_sign_soroban_authorization::StellarSorobanAuthorizationWithAddress>,
+    // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.entry)
+    pub entry: ::protobuf::MessageField<StellarSorobanAuthorizationEntry>,
     // special fields
     // @@protoc_insertion_point(special_field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.special_fields)
     pub special_fields: ::protobuf::SpecialFields,
@@ -10045,30 +10046,8 @@ impl StellarSignSorobanAuthorization {
         self.network_passphrase.take().unwrap_or_else(|| ::std::string::String::new())
     }
 
-    // required .hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationEnvelopeType envelope_type = 3;
-
-    pub fn envelope_type(&self) -> stellar_sign_soroban_authorization::StellarSorobanAuthorizationEnvelopeType {
-        match self.envelope_type {
-            Some(e) => e.enum_value_or(stellar_sign_soroban_authorization::StellarSorobanAuthorizationEnvelopeType::ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS),
-            None => stellar_sign_soroban_authorization::StellarSorobanAuthorizationEnvelopeType::ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS,
-        }
-    }
-
-    pub fn clear_envelope_type(&mut self) {
-        self.envelope_type = ::std::option::Option::None;
-    }
-
-    pub fn has_envelope_type(&self) -> bool {
-        self.envelope_type.is_some()
-    }
-
-    // Param is passed by value, moved
-    pub fn set_envelope_type(&mut self, v: stellar_sign_soroban_authorization::StellarSorobanAuthorizationEnvelopeType) {
-        self.envelope_type = ::std::option::Option::Some(::protobuf::EnumOrUnknown::new(v));
-    }
-
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
-        let mut fields = ::std::vec::Vec::with_capacity(4);
+        let mut fields = ::std::vec::Vec::with_capacity(3);
         let mut oneofs = ::std::vec::Vec::with_capacity(0);
         fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
             "address_n",
@@ -10080,15 +10059,10 @@ impl StellarSignSorobanAuthorization {
             |m: &StellarSignSorobanAuthorization| { &m.network_passphrase },
             |m: &mut StellarSignSorobanAuthorization| { &mut m.network_passphrase },
         ));
-        fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-            "envelope_type",
-            |m: &StellarSignSorobanAuthorization| { &m.envelope_type },
-            |m: &mut StellarSignSorobanAuthorization| { &mut m.envelope_type },
-        ));
-        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, stellar_sign_soroban_authorization::StellarSorobanAuthorizationWithAddress>(
-            "soroban_authorization_with_address",
-            |m: &StellarSignSorobanAuthorization| { &m.soroban_authorization_with_address },
-            |m: &mut StellarSignSorobanAuthorization| { &mut m.soroban_authorization_with_address },
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, StellarSorobanAuthorizationEntry>(
+            "entry",
+            |m: &StellarSignSorobanAuthorization| { &m.entry },
+            |m: &mut StellarSignSorobanAuthorization| { &mut m.entry },
         ));
         ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<StellarSignSorobanAuthorization>(
             "StellarSignSorobanAuthorization",
@@ -10105,10 +10079,10 @@ impl ::protobuf::Message for StellarSignSorobanAuthorization {
         if self.network_passphrase.is_none() {
             return false;
         }
-        if self.envelope_type.is_none() {
+        if self.entry.is_none() {
             return false;
         }
-        for v in &self.soroban_authorization_with_address {
+        for v in &self.entry {
             if !v.is_initialized() {
                 return false;
             }
@@ -10128,11 +10102,8 @@ impl ::protobuf::Message for StellarSignSorobanAuthorization {
                 18 => {
                     self.network_passphrase = ::std::option::Option::Some(is.read_string()?);
                 },
-                24 => {
-                    self.envelope_type = ::std::option::Option::Some(is.read_enum_or_unknown()?);
-                },
-                34 => {
-                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.soroban_authorization_with_address)?;
+                26 => {
+                    ::protobuf::rt::read_singular_message_into_field(is, &mut self.entry)?;
                 },
                 tag => {
                     ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
@@ -10152,10 +10123,7 @@ impl ::protobuf::Message for StellarSignSorobanAuthorization {
         if let Some(v) = self.network_passphrase.as_ref() {
             my_size += ::protobuf::rt::string_size(2, &v);
         }
-        if let Some(v) = self.envelope_type {
-            my_size += ::protobuf::rt::int32_size(3, v.value());
-        }
-        if let Some(v) = self.soroban_authorization_with_address.as_ref() {
+        if let Some(v) = self.entry.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
         }
@@ -10171,11 +10139,8 @@ impl ::protobuf::Message for StellarSignSorobanAuthorization {
         if let Some(v) = self.network_passphrase.as_ref() {
             os.write_string(2, v)?;
         }
-        if let Some(v) = self.envelope_type {
-            os.write_enum(3, ::protobuf::EnumOrUnknown::value(&v))?;
-        }
-        if let Some(v) = self.soroban_authorization_with_address.as_ref() {
-            ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
+        if let Some(v) = self.entry.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
         }
         os.write_unknown_fields(self.special_fields.unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -10196,8 +10161,7 @@ impl ::protobuf::Message for StellarSignSorobanAuthorization {
     fn clear(&mut self) {
         self.address_n.clear();
         self.network_passphrase = ::std::option::Option::None;
-        self.envelope_type = ::std::option::Option::None;
-        self.soroban_authorization_with_address.clear();
+        self.entry.clear();
         self.special_fields.clear();
     }
 
@@ -10205,8 +10169,7 @@ impl ::protobuf::Message for StellarSignSorobanAuthorization {
         static instance: StellarSignSorobanAuthorization = StellarSignSorobanAuthorization {
             address_n: ::std::vec::Vec::new(),
             network_passphrase: ::std::option::Option::None,
-            envelope_type: ::std::option::Option::None,
-            soroban_authorization_with_address: ::protobuf::MessageField::none(),
+            entry: ::protobuf::MessageField::none(),
             special_fields: ::protobuf::SpecialFields::new(),
         };
         &instance
@@ -10228,337 +10191,6 @@ impl ::std::fmt::Display for StellarSignSorobanAuthorization {
 
 impl ::protobuf::reflect::ProtobufValue for StellarSignSorobanAuthorization {
     type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
-}
-
-/// Nested message and enums of message `StellarSignSorobanAuthorization`
-pub mod stellar_sign_soroban_authorization {
-    // @@protoc_insertion_point(message:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress)
-    #[derive(PartialEq,Clone,Default,Debug)]
-    pub struct StellarSorobanAuthorizationWithAddress {
-        // message fields
-        // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress.nonce)
-        pub nonce: ::std::option::Option<i64>,
-        // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress.signature_expiration_ledger)
-        pub signature_expiration_ledger: ::std::option::Option<u32>,
-        // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress.address)
-        pub address: ::std::option::Option<::std::string::String>,
-        // @@protoc_insertion_point(field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress.invocation)
-        pub invocation: ::protobuf::MessageField<super::StellarSorobanAuthorizedInvocation>,
-        // special fields
-        // @@protoc_insertion_point(special_field:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress.special_fields)
-        pub special_fields: ::protobuf::SpecialFields,
-    }
-
-    impl<'a> ::std::default::Default for &'a StellarSorobanAuthorizationWithAddress {
-        fn default() -> &'a StellarSorobanAuthorizationWithAddress {
-            <StellarSorobanAuthorizationWithAddress as ::protobuf::Message>::default_instance()
-        }
-    }
-
-    impl StellarSorobanAuthorizationWithAddress {
-        pub fn new() -> StellarSorobanAuthorizationWithAddress {
-            ::std::default::Default::default()
-        }
-
-        // required sint64 nonce = 1;
-
-        pub fn nonce(&self) -> i64 {
-            self.nonce.unwrap_or(0)
-        }
-
-        pub fn clear_nonce(&mut self) {
-            self.nonce = ::std::option::Option::None;
-        }
-
-        pub fn has_nonce(&self) -> bool {
-            self.nonce.is_some()
-        }
-
-        // Param is passed by value, moved
-        pub fn set_nonce(&mut self, v: i64) {
-            self.nonce = ::std::option::Option::Some(v);
-        }
-
-        // required uint32 signature_expiration_ledger = 2;
-
-        pub fn signature_expiration_ledger(&self) -> u32 {
-            self.signature_expiration_ledger.unwrap_or(0)
-        }
-
-        pub fn clear_signature_expiration_ledger(&mut self) {
-            self.signature_expiration_ledger = ::std::option::Option::None;
-        }
-
-        pub fn has_signature_expiration_ledger(&self) -> bool {
-            self.signature_expiration_ledger.is_some()
-        }
-
-        // Param is passed by value, moved
-        pub fn set_signature_expiration_ledger(&mut self, v: u32) {
-            self.signature_expiration_ledger = ::std::option::Option::Some(v);
-        }
-
-        // required string address = 3;
-
-        pub fn address(&self) -> &str {
-            match self.address.as_ref() {
-                Some(v) => v,
-                None => "",
-            }
-        }
-
-        pub fn clear_address(&mut self) {
-            self.address = ::std::option::Option::None;
-        }
-
-        pub fn has_address(&self) -> bool {
-            self.address.is_some()
-        }
-
-        // Param is passed by value, moved
-        pub fn set_address(&mut self, v: ::std::string::String) {
-            self.address = ::std::option::Option::Some(v);
-        }
-
-        // Mutable pointer to the field.
-        // If field is not initialized, it is initialized with default value first.
-        pub fn mut_address(&mut self) -> &mut ::std::string::String {
-            if self.address.is_none() {
-                self.address = ::std::option::Option::Some(::std::string::String::new());
-            }
-            self.address.as_mut().unwrap()
-        }
-
-        // Take field
-        pub fn take_address(&mut self) -> ::std::string::String {
-            self.address.take().unwrap_or_else(|| ::std::string::String::new())
-        }
-
-        pub(in super) fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
-            let mut fields = ::std::vec::Vec::with_capacity(4);
-            let mut oneofs = ::std::vec::Vec::with_capacity(0);
-            fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-                "nonce",
-                |m: &StellarSorobanAuthorizationWithAddress| { &m.nonce },
-                |m: &mut StellarSorobanAuthorizationWithAddress| { &mut m.nonce },
-            ));
-            fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-                "signature_expiration_ledger",
-                |m: &StellarSorobanAuthorizationWithAddress| { &m.signature_expiration_ledger },
-                |m: &mut StellarSorobanAuthorizationWithAddress| { &mut m.signature_expiration_ledger },
-            ));
-            fields.push(::protobuf::reflect::rt::v2::make_option_accessor::<_, _>(
-                "address",
-                |m: &StellarSorobanAuthorizationWithAddress| { &m.address },
-                |m: &mut StellarSorobanAuthorizationWithAddress| { &mut m.address },
-            ));
-            fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, super::StellarSorobanAuthorizedInvocation>(
-                "invocation",
-                |m: &StellarSorobanAuthorizationWithAddress| { &m.invocation },
-                |m: &mut StellarSorobanAuthorizationWithAddress| { &mut m.invocation },
-            ));
-            ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<StellarSorobanAuthorizationWithAddress>(
-                "StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress",
-                fields,
-                oneofs,
-            )
-        }
-    }
-
-    impl ::protobuf::Message for StellarSorobanAuthorizationWithAddress {
-        const NAME: &'static str = "StellarSorobanAuthorizationWithAddress";
-
-        fn is_initialized(&self) -> bool {
-            if self.nonce.is_none() {
-                return false;
-            }
-            if self.signature_expiration_ledger.is_none() {
-                return false;
-            }
-            if self.address.is_none() {
-                return false;
-            }
-            if self.invocation.is_none() {
-                return false;
-            }
-            for v in &self.invocation {
-                if !v.is_initialized() {
-                    return false;
-                }
-            };
-            true
-        }
-
-        fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::Result<()> {
-            while let Some(tag) = is.read_raw_tag_or_eof()? {
-                match tag {
-                    8 => {
-                        self.nonce = ::std::option::Option::Some(is.read_sint64()?);
-                    },
-                    16 => {
-                        self.signature_expiration_ledger = ::std::option::Option::Some(is.read_uint32()?);
-                    },
-                    26 => {
-                        self.address = ::std::option::Option::Some(is.read_string()?);
-                    },
-                    34 => {
-                        ::protobuf::rt::read_singular_message_into_field(is, &mut self.invocation)?;
-                    },
-                    tag => {
-                        ::protobuf::rt::read_unknown_or_skip_group(tag, is, self.special_fields.mut_unknown_fields())?;
-                    },
-                };
-            }
-            ::std::result::Result::Ok(())
-        }
-
-        // Compute sizes of nested messages
-        #[allow(unused_variables)]
-        fn compute_size(&self) -> u64 {
-            let mut my_size = 0;
-            if let Some(v) = self.nonce {
-                my_size += ::protobuf::rt::sint64_size(1, v);
-            }
-            if let Some(v) = self.signature_expiration_ledger {
-                my_size += ::protobuf::rt::uint32_size(2, v);
-            }
-            if let Some(v) = self.address.as_ref() {
-                my_size += ::protobuf::rt::string_size(3, &v);
-            }
-            if let Some(v) = self.invocation.as_ref() {
-                let len = v.compute_size();
-                my_size += 1 + ::protobuf::rt::compute_raw_varint64_size(len) + len;
-            }
-            my_size += ::protobuf::rt::unknown_fields_size(self.special_fields.unknown_fields());
-            self.special_fields.cached_size().set(my_size as u32);
-            my_size
-        }
-
-        fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::Result<()> {
-            if let Some(v) = self.nonce {
-                os.write_sint64(1, v)?;
-            }
-            if let Some(v) = self.signature_expiration_ledger {
-                os.write_uint32(2, v)?;
-            }
-            if let Some(v) = self.address.as_ref() {
-                os.write_string(3, v)?;
-            }
-            if let Some(v) = self.invocation.as_ref() {
-                ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
-            }
-            os.write_unknown_fields(self.special_fields.unknown_fields())?;
-            ::std::result::Result::Ok(())
-        }
-
-        fn special_fields(&self) -> &::protobuf::SpecialFields {
-            &self.special_fields
-        }
-
-        fn mut_special_fields(&mut self) -> &mut ::protobuf::SpecialFields {
-            &mut self.special_fields
-        }
-
-        fn new() -> StellarSorobanAuthorizationWithAddress {
-            StellarSorobanAuthorizationWithAddress::new()
-        }
-
-        fn clear(&mut self) {
-            self.nonce = ::std::option::Option::None;
-            self.signature_expiration_ledger = ::std::option::Option::None;
-            self.address = ::std::option::Option::None;
-            self.invocation.clear();
-            self.special_fields.clear();
-        }
-
-        fn default_instance() -> &'static StellarSorobanAuthorizationWithAddress {
-            static instance: StellarSorobanAuthorizationWithAddress = StellarSorobanAuthorizationWithAddress {
-                nonce: ::std::option::Option::None,
-                signature_expiration_ledger: ::std::option::Option::None,
-                address: ::std::option::Option::None,
-                invocation: ::protobuf::MessageField::none(),
-                special_fields: ::protobuf::SpecialFields::new(),
-            };
-            &instance
-        }
-    }
-
-    impl ::protobuf::MessageFull for StellarSorobanAuthorizationWithAddress {
-        fn descriptor() -> ::protobuf::reflect::MessageDescriptor {
-            static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::Lazy::new();
-            descriptor.get(|| super::file_descriptor().message_by_package_relative_name("StellarSignSorobanAuthorization.StellarSorobanAuthorizationWithAddress").unwrap()).clone()
-        }
-    }
-
-    impl ::std::fmt::Display for StellarSorobanAuthorizationWithAddress {
-        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-            ::protobuf::text_format::fmt(self, f)
-        }
-    }
-
-    impl ::protobuf::reflect::ProtobufValue for StellarSorobanAuthorizationWithAddress {
-        type RuntimeType = ::protobuf::reflect::rt::RuntimeTypeMessage<Self>;
-    }
-
-    #[derive(Clone,Copy,PartialEq,Eq,Debug,Hash)]
-    // @@protoc_insertion_point(enum:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationEnvelopeType)
-    pub enum StellarSorobanAuthorizationEnvelopeType {
-        // @@protoc_insertion_point(enum_value:hw.trezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuthorizationEnvelopeType.ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS)
-        ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS = 10,
-    }
-
-    impl ::protobuf::Enum for StellarSorobanAuthorizationEnvelopeType {
-        const NAME: &'static str = "StellarSorobanAuthorizationEnvelopeType";
-
-        fn value(&self) -> i32 {
-            *self as i32
-        }
-
-        fn from_i32(value: i32) -> ::std::option::Option<StellarSorobanAuthorizationEnvelopeType> {
-            match value {
-                10 => ::std::option::Option::Some(StellarSorobanAuthorizationEnvelopeType::ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS),
-                _ => ::std::option::Option::None
-            }
-        }
-
-        fn from_str(str: &str) -> ::std::option::Option<StellarSorobanAuthorizationEnvelopeType> {
-            match str {
-                "ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS" => ::std::option::Option::Some(StellarSorobanAuthorizationEnvelopeType::ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS),
-                _ => ::std::option::Option::None
-            }
-        }
-
-        const VALUES: &'static [StellarSorobanAuthorizationEnvelopeType] = &[
-            StellarSorobanAuthorizationEnvelopeType::ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS,
-        ];
-    }
-
-    impl ::protobuf::EnumFull for StellarSorobanAuthorizationEnvelopeType {
-        fn enum_descriptor() -> ::protobuf::reflect::EnumDescriptor {
-            static descriptor: ::protobuf::rt::Lazy<::protobuf::reflect::EnumDescriptor> = ::protobuf::rt::Lazy::new();
-            descriptor.get(|| super::file_descriptor().enum_by_package_relative_name("StellarSignSorobanAuthorization.StellarSorobanAuthorizationEnvelopeType").unwrap()).clone()
-        }
-
-        fn descriptor(&self) -> ::protobuf::reflect::EnumValueDescriptor {
-            let index = match self {
-                StellarSorobanAuthorizationEnvelopeType::ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS => 0,
-            };
-            Self::enum_descriptor().value_by_index(index)
-        }
-    }
-
-    // Note, `Default` is implemented although default value is not 0
-    impl ::std::default::Default for StellarSorobanAuthorizationEnvelopeType {
-        fn default() -> Self {
-            StellarSorobanAuthorizationEnvelopeType::ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS
-        }
-    }
-
-    impl StellarSorobanAuthorizationEnvelopeType {
-        pub(in super) fn generated_enum_descriptor_data() -> ::protobuf::reflect::GeneratedEnumDescriptorData {
-            ::protobuf::reflect::GeneratedEnumDescriptorData::new::<StellarSorobanAuthorizationEnvelopeType>("StellarSignSorobanAuthorization.StellarSorobanAuthorizationEnvelopeType")
-        }
-    }
 }
 
 // @@protoc_insertion_point(message:hw.trezor.messages.stellar.StellarSorobanAuthorizationSignature)
@@ -11313,42 +10945,32 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x02(\tR\x07address\x12\x14\n\x05nonce\x18\x02\x20\x02(\x12R\x05nonce\
     \x12>\n\x1bsignature_expiration_ledger\x18\x03\x20\x02(\rR\x19signatureE\
     xpirationLedger\x12F\n\tsignature\x18\x04\x20\x02(\x0b2(.hw.trezor.messa\
-    ges.stellar.StellarSCValR\tsignature\"\xc6\x02\n\x19StellarSorobanCreden\
+    ges.stellar.StellarSCValR\tsignature\"\xd4\x02\n\x19StellarSorobanCreden\
     tials\x12g\n\x04type\x18\x01\x20\x02(\x0e2S.hw.trezor.messages.stellar.S\
-    tellarSorobanCredentials.StellarSorobanCredentialsTypeR\x04type\x12V\n\
-    \x07address\x18\x02\x20\x01(\x0b2<.hw.trezor.messages.stellar.StellarSor\
-    obanAddressCredentialsR\x07address\"h\n\x1dStellarSorobanCredentialsType\
-    \x12&\n\"SOROBAN_CREDENTIALS_SOURCE_ACCOUNT\x10\0\x12\x1f\n\x1bSOROBAN_C\
-    REDENTIALS_ADDRESS\x10\x01\"\xe4\x01\n\x20StellarSorobanAuthorizationEnt\
-    ry\x12W\n\x0bcredentials\x18\x01\x20\x02(\x0b25.hw.trezor.messages.stell\
-    ar.StellarSorobanCredentialsR\x0bcredentials\x12g\n\x0froot_invocation\
-    \x18\x02\x20\x02(\x0b2>.hw.trezor.messages.stellar.StellarSorobanAuthori\
-    zedInvocationR\x0erootInvocation\"\xe3\x01\n\x1bStellarInvokeHostFunctio\
-    nOp\x12%\n\x0esource_account\x18\x01\x20\x01(\tR\rsourceAccount\x12K\n\
-    \x08function\x18\x02\x20\x02(\x0b2/.hw.trezor.messages.stellar.StellarHo\
-    stFunctionR\x08function\x12P\n\x04auth\x18\x03\x20\x03(\x0b2<.hw.trezor.\
-    messages.stellar.StellarSorobanAuthorizationEntryR\x04auth\"\x86\x06\n\
-    \x1fStellarSignSorobanAuthorization\x12\x1b\n\taddress_n\x18\x01\x20\x03\
-    (\rR\x08addressN\x12-\n\x12network_passphrase\x18\x02\x20\x02(\tR\x11net\
-    workPassphrase\x12\x88\x01\n\renvelope_type\x18\x03\x20\x02(\x0e2c.hw.tr\
-    ezor.messages.stellar.StellarSignSorobanAuthorization.StellarSorobanAuth\
-    orizationEnvelopeTypeR\x0cenvelopeType\x12\xaf\x01\n\"soroban_authorizat\
-    ion_with_address\x18\x04\x20\x01(\x0b2b.hw.trezor.messages.stellar.Stell\
-    arSignSorobanAuthorization.StellarSorobanAuthorizationWithAddressR\x1fso\
-    robanAuthorizationWithAddress\x1a\xf8\x01\n&StellarSorobanAuthorizationW\
-    ithAddress\x12\x14\n\x05nonce\x18\x01\x20\x02(\x12R\x05nonce\x12>\n\x1bs\
-    ignature_expiration_ledger\x18\x02\x20\x02(\rR\x19signatureExpirationLed\
-    ger\x12\x18\n\x07address\x18\x03\x20\x02(\tR\x07address\x12^\n\ninvocati\
-    on\x18\x04\x20\x02(\x0b2>.hw.trezor.messages.stellar.StellarSorobanAutho\
-    rizedInvocationR\ninvocation\"_\n'StellarSorobanAuthorizationEnvelopeTyp\
-    e\x124\n0ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS\x10\n\"c\n$Ste\
-    llarSorobanAuthorizationSignature\x12\x1d\n\npublic_key\x18\x01\x20\x02(\
-    \x0cR\tpublicKey\x12\x1c\n\tsignature\x18\x02\x20\x02(\x0cR\tsignature\"\
-    \x15\n\x13StellarTxExtRequest\"?\n\x0cStellarTxExt\x12\x0c\n\x01v\x18\
-    \x01\x20\x02(\x11R\x01v\x12!\n\x0csoroban_data\x18\x02\x20\x01(\x0cR\x0b\
-    sorobanData*=\n\x10StellarAssetType\x12\n\n\x06NATIVE\x10\0\x12\r\n\tALP\
-    HANUM4\x10\x01\x12\x0e\n\nALPHANUM12\x10\x02B;\n#com.satoshilabs.trezor.\
-    lib.protobufB\x14TrezorMessageStellar\
+    tellarSorobanCredentials.StellarSorobanCredentialsTypeR\x04type\x12[\n\n\
+    address_v2\x18\x02\x20\x01(\x0b2<.hw.trezor.messages.stellar.StellarSoro\
+    banAddressCredentialsR\taddressV2\"q\n\x1dStellarSorobanCredentialsType\
+    \x12&\n\"SOROBAN_CREDENTIALS_SOURCE_ACCOUNT\x10\0\x12\"\n\x1eSOROBAN_CRE\
+    DENTIALS_ADDRESS_V2\x10\x02\"\x04\x08\x01\x10\x01\"\xe4\x01\n\x20Stellar\
+    SorobanAuthorizationEntry\x12W\n\x0bcredentials\x18\x01\x20\x02(\x0b25.h\
+    w.trezor.messages.stellar.StellarSorobanCredentialsR\x0bcredentials\x12g\
+    \n\x0froot_invocation\x18\x02\x20\x02(\x0b2>.hw.trezor.messages.stellar.\
+    StellarSorobanAuthorizedInvocationR\x0erootInvocation\"\xe3\x01\n\x1bSte\
+    llarInvokeHostFunctionOp\x12%\n\x0esource_account\x18\x01\x20\x01(\tR\rs\
+    ourceAccount\x12K\n\x08function\x18\x02\x20\x02(\x0b2/.hw.trezor.message\
+    s.stellar.StellarHostFunctionR\x08function\x12P\n\x04auth\x18\x03\x20\
+    \x03(\x0b2<.hw.trezor.messages.stellar.StellarSorobanAuthorizationEntryR\
+    \x04auth\"\xc1\x01\n\x1fStellarSignSorobanAuthorization\x12\x1b\n\taddre\
+    ss_n\x18\x01\x20\x03(\rR\x08addressN\x12-\n\x12network_passphrase\x18\
+    \x02\x20\x02(\tR\x11networkPassphrase\x12R\n\x05entry\x18\x03\x20\x02(\
+    \x0b2<.hw.trezor.messages.stellar.StellarSorobanAuthorizationEntryR\x05e\
+    ntry\"c\n$StellarSorobanAuthorizationSignature\x12\x1d\n\npublic_key\x18\
+    \x01\x20\x02(\x0cR\tpublicKey\x12\x1c\n\tsignature\x18\x02\x20\x02(\x0cR\
+    \tsignature\"\x15\n\x13StellarTxExtRequest\"?\n\x0cStellarTxExt\x12\x0c\
+    \n\x01v\x18\x01\x20\x02(\x11R\x01v\x12!\n\x0csoroban_data\x18\x02\x20\
+    \x01(\x0cR\x0bsorobanData*=\n\x10StellarAssetType\x12\n\n\x06NATIVE\x10\
+    \0\x12\r\n\tALPHANUM4\x10\x01\x12\x0e\n\nALPHANUM12\x10\x02B;\n#com.sato\
+    shilabs.trezor.lib.protobufB\x14TrezorMessageStellar\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
@@ -11367,7 +10989,7 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
         let generated_file_descriptor = generated_file_descriptor_lazy.get(|| {
             let mut deps = ::std::vec::Vec::with_capacity(1);
             deps.push(super::messages_common::file_descriptor().clone());
-            let mut messages = ::std::vec::Vec::with_capacity(39);
+            let mut messages = ::std::vec::Vec::with_capacity(38);
             messages.push(StellarAsset::generated_message_descriptor_data());
             messages.push(StellarGetAddress::generated_message_descriptor_data());
             messages.push(StellarAddress::generated_message_descriptor_data());
@@ -11406,8 +11028,7 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
             messages.push(stellar_scval::StellarUInt256Parts::generated_message_descriptor_data());
             messages.push(stellar_scval::StellarInt256Parts::generated_message_descriptor_data());
             messages.push(stellar_scval::StellarSCValMapEntry::generated_message_descriptor_data());
-            messages.push(stellar_sign_soroban_authorization::StellarSorobanAuthorizationWithAddress::generated_message_descriptor_data());
-            let mut enums = ::std::vec::Vec::with_capacity(8);
+            let mut enums = ::std::vec::Vec::with_capacity(7);
             enums.push(StellarAssetType::generated_enum_descriptor_data());
             enums.push(stellar_sign_tx::StellarMemoType::generated_enum_descriptor_data());
             enums.push(stellar_set_options_op::StellarSignerType::generated_enum_descriptor_data());
@@ -11415,7 +11036,6 @@ pub fn file_descriptor() -> &'static ::protobuf::reflect::FileDescriptor {
             enums.push(stellar_soroban_authorized_function::StellarSorobanAuthorizedFunctionType::generated_enum_descriptor_data());
             enums.push(stellar_host_function::StellarHostFunctionType::generated_enum_descriptor_data());
             enums.push(stellar_soroban_credentials::StellarSorobanCredentialsType::generated_enum_descriptor_data());
-            enums.push(stellar_sign_soroban_authorization::StellarSorobanAuthorizationEnvelopeType::generated_enum_descriptor_data());
             ::protobuf::reflect::GeneratedFileDescriptor::new_generated(
                 file_descriptor_proto(),
                 deps,
