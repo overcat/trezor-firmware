@@ -167,7 +167,7 @@ def sign_soroban_authorization(
         click.echo("  pip install 'stellar-sdk>=15'")
         sys.exit(1)
     try:
-        entry = stellar_xdr.SorobanAuthorizationEntry.from_xdr(b64entry)
+        entry_xdr = stellar_xdr.SorobanAuthorizationEntry.from_xdr(b64entry)
     except Exception as e:
         click.echo(
             f"Failed to parse XDR: {e}\n"
@@ -176,19 +176,21 @@ def sign_soroban_authorization(
         sys.exit(1)
 
     if (
-        entry.credentials.type
+        entry_xdr.credentials.type
         != stellar_xdr.SorobanCredentialsType.SOROBAN_CREDENTIALS_ADDRESS_V2
     ):
-        click.echo(f"Unsupported SorobanCredentials type: {entry.credentials.type}.")
+        click.echo(
+            f"Unsupported SorobanCredentials type: {entry_xdr.credentials.type}."
+        )
         click.echo("Only SOROBAN_CREDENTIALS_ADDRESS_V2 entries can be signed.")
         sys.exit(1)
 
-    entry_pb = stellar._read_authorization_entry(entry)
-    assert entry_pb.credentials.address_v2 is not None
-    entry_pb.credentials.address_v2.signature_expiration_ledger = valid_until_ledger
+    entry = stellar._read_authorization_entry(entry_xdr)
+    assert entry.credentials.address_v2 is not None
+    entry.credentials.address_v2.signature_expiration_ledger = valid_until_ledger
 
     address_n = tools.parse_path(address)
     resp = stellar.sign_soroban_authorization(
-        session, address_n, network_passphrase, entry_pb
+        session, address_n, network_passphrase, entry
     )
     return base64.b64encode(resp.signature)
