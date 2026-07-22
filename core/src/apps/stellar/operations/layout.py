@@ -565,7 +565,7 @@ async def _confirm_auth_entry(
             raise DataError("Stellar: missing address credentials")
 
         await confirm_address(
-            f"{TR.stellar__authorization} {position}",
+            f"{TR.stellar__authorization} #{position}",
             creds.address_v2.address,
             description=TR.words__address,
             br_name="op_auth_entry_address",
@@ -573,7 +573,7 @@ async def _confirm_auth_entry(
 
     # Show the whole authorized invocation tree starting from its root (not just the
     # nested sub-invocations), so the user sees exactly what this signature authorizes.
-    await _confirm_invocation(auth.root_invocation, str(position), is_root=is_root)
+    await _confirm_invocation(auth.root_invocation, f"#{position}", is_root=is_root)
 
 
 async def confirm_authorized_invocation(
@@ -582,7 +582,8 @@ async def confirm_authorized_invocation(
     """Confirm a standalone authorized invocation tree (auth entry signing).
 
     Unlike in a transaction, there is always exactly one entry being signed, so
-    its root is not numbered; sub-invocations are numbered relative to it.
+    its root label is empty; sub-invocations are numbered relative to it
+    (".1", ".1.2", ...), the same paths they would have inside a transaction.
     """
     await _confirm_invocation(invocation, "")
 
@@ -593,9 +594,11 @@ async def _confirm_invocation(
     """Confirm an authorized invocation and its sub-invocations recursively.
 
     The whole authorization tree is shown by default (it is security-critical and
-    can differ from the host function being invoked). `position` is the path in
-    the auth tree (e.g. "1", "1-2", "1-2-1"), or empty for the unnumbered root
-    of a standalone authorization entry.
+    can differ from the host function being invoked). `position` is the root
+    label plus the dot-delimited path in the auth tree (e.g. "#2", "#2.1" in a
+    transaction), or empty for the unlabeled root of a standalone authorization
+    entry (whose children are then ".1", ".1.2", ...), so a given entry's
+    children carry the same paths in both flows.
     """
     from trezor.enums import StellarSorobanAuthorizedFunctionType
 
@@ -621,8 +624,7 @@ async def _confirm_invocation(
         )
 
     for i, sub in enumerate(invocation.sub_invocations):
-        sub_position = f"{position}-{i + 1}" if position else str(i + 1)
-        await _confirm_invocation(sub, sub_position)
+        await _confirm_invocation(sub, f"{position}.{i + 1}")
 
 
 def _escape_str(s: str) -> str:
