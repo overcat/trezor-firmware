@@ -168,18 +168,37 @@ async def require_confirm_final(
     )
 
 
-async def require_confirm_auth_signing_address(address: str) -> None:
+async def require_confirm_auth_signing_address(
+    address: str, address_n: Bip32Path
+) -> None:
     """Confirm the device account whose key signs the Soroban authorization.
 
     Always the first screen of the flow, like the signing address screen of
     Ethereum's message signing flows.
     """
+    from apps.common import paths
+
+    from . import PATTERN, SLIP44_ID
+
+    account_name = paths.get_account_name("Stellar", address_n, PATTERN, SLIP44_ID)
+    account_path = paths.address_n_to_str(address_n)
+
+    if account_name is None:
+        raise wire.DataError("Stellar: Invalid account name")
+
+    info_items: list[StrPropertyType] = [
+        (TR.words__account, account_name, None),
+        (TR.address_details__derivation_path, account_path, None),
+    ]
+
     await layouts.confirm_address(
         title=TR.sign_message__confirm_address,
         address=address,
         br_name="confirm_auth_signing_address",
         br_code=ButtonRequestType.ConfirmOutput,
         verb=TR.buttons__continue,
+        info_items=info_items,
+        info_title=TR.address_details__account_info,
     )
 
 

@@ -61,7 +61,7 @@ async def sign_soroban_authorization(
     write_sc_address(w, auth.address)
     write_soroban_authorized_invocation(w, auth.invocation)
 
-    await layout.require_confirm_auth_signing_address(signing_address)
+    await layout.require_confirm_auth_signing_address(signing_address, msg.address_n)
 
     if auth.address != signing_address:
         # The credentials belong to another party, e.g. a contract account of
