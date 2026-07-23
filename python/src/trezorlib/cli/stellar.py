@@ -14,9 +14,11 @@
 # You should have received a copy of the License along with this library.
 # If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
 
+from __future__ import annotations
+
 import base64
 import sys
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import click
 
@@ -147,7 +149,7 @@ def sign_soroban_authorization(
     b64entry: str,
     address: str,
     network_passphrase: str,
-    valid_until_ledger: Optional[int],
+    valid_until_ledger: int | None,
 ) -> bytes:
     """Sign a base64-encoded Soroban authorization entry.
 
