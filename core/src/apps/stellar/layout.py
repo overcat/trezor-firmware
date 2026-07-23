@@ -225,7 +225,7 @@ async def require_confirm_signature_expiration_ledger(
     await layouts.confirm_value(
         title=TR.stellar__sign_authorization,
         value=str(signature_expiration_ledger),
-        description=TR.stellar__live_until_ledger,
+        description=TR.stellar__valid_until_ledger,
         br_name="confirm_soroban_auth",
         br_code=ButtonRequestType.SignTx,
         hold=True,

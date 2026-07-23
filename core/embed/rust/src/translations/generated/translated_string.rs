@@ -1663,7 +1663,7 @@ pub enum TranslatedString {
     words__authorization = 1259,  // "Authorization"
     words__function = 1260,  // "Function"
     #[cfg(feature = "universal_fw")]
-    stellar__live_until_ledger = 1261,  // "Valid until ledger"
+    stellar__valid_until_ledger = 1261,  // "Valid until ledger"
     #[cfg(feature = "universal_fw")]
     stellar__sign_authorization = 1262,  // "Sign authorization"
     #[cfg(feature = "universal_fw")]
@@ -43634,8 +43634,6 @@ impl TranslatedString {
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__limit, Self::stellar__limit),
         #[cfg(feature = "universal_fw")]
-        (Qstr::MP_QSTR_stellar__live_until_ledger, Self::stellar__live_until_ledger),
-        #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__low, Self::stellar__low),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__master_weight, Self::stellar__master_weight),
@@ -43701,6 +43699,8 @@ impl TranslatedString {
         (Qstr::MP_QSTR_stellar__valid_from, Self::stellar__valid_from),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__valid_to, Self::stellar__valid_to),
+        #[cfg(feature = "universal_fw")]
+        (Qstr::MP_QSTR_stellar__valid_until_ledger, Self::stellar__valid_until_ledger),
         #[cfg(feature = "universal_fw")]
         (Qstr::MP_QSTR_stellar__value_sha256, Self::stellar__value_sha256),
         #[cfg(feature = "universal_fw")]

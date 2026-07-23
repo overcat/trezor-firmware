@@ -2837,7 +2837,6 @@
     "stellar__issuer_template": "{0} issuer",
     "stellar__key": "Key",
     "stellar__limit": "Limit",
-    "stellar__live_until_ledger": "Valid until ledger",
     "stellar__low": "Low",
     "stellar__master_weight": "Master Weight",
     "stellar__medium": "Medium",
@@ -2871,6 +2870,7 @@
     "stellar__update": "Update",
     "stellar__valid_from": "Valid from (UTC)",
     "stellar__valid_to": "Valid to (UTC)",
+    "stellar__valid_until_ledger": "Valid until ledger",
     "stellar__value_sha256": "Value (SHA-256)",
     "stellar__wanna_clean_value_key_template": "Do you want to clear value key {0}?",
     "storage_msg__processing": {

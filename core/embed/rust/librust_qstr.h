@@ -1517,7 +1517,6 @@ static void _librust_qstrs(void) {
   MP_QSTR_stellar__issuer_template;
   MP_QSTR_stellar__key;
   MP_QSTR_stellar__limit;
-  MP_QSTR_stellar__live_until_ledger;
   MP_QSTR_stellar__low;
   MP_QSTR_stellar__master_weight;
   MP_QSTR_stellar__medium;
@@ -1551,6 +1550,7 @@ static void _librust_qstrs(void) {
   MP_QSTR_stellar__update;
   MP_QSTR_stellar__valid_from;
   MP_QSTR_stellar__valid_to;
+  MP_QSTR_stellar__valid_until_ledger;
   MP_QSTR_stellar__value_sha256;
   MP_QSTR_stellar__wanna_clean_value_key_template;
   MP_QSTR_tezos__baker_address;
