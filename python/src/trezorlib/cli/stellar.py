@@ -188,17 +188,14 @@ def sign_soroban_authorization(
         click.echo("Only SOROBAN_CREDENTIALS_ADDRESS_V2 entries can be signed.")
         sys.exit(1)
 
-    if valid_until_ledger is not None:
-        assert entry_xdr.credentials.address_v2 is not None
-        entry_xdr.credentials.address_v2.signature_expiration_ledger = (
-            stellar_xdr.Uint32(valid_until_ledger)
-        )
-
     address_n = tools.parse_path(address)
+    authorization = stellar.from_authorization_entry(entry_xdr)
+    if valid_until_ledger is not None:
+        authorization.signature_expiration_ledger = valid_until_ledger
     resp = stellar.sign_soroban_authorization(
         session,
         address_n,
         network_passphrase,
-        stellar.from_authorization_entry(entry_xdr),
+        authorization,
     )
     return base64.b64encode(resp.signature)
