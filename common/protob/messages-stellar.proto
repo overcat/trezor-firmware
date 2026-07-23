@@ -494,7 +494,8 @@ message StellarSignSorobanAuthorization {
     // networkID is derived from it
     required string network_passphrase = 2;
     required StellarSorobanAuthorizationEnvelopeType envelope_type = 3;  // the HashIDPreimage variant to sign
-    optional StellarSorobanAuthorizationWithAddress soroban_authorization_with_address = 4;  // union arm for ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS
+    optional StellarSorobanAuthorizationWithAddress soroban_authorization_with_address =
+        4;  // union arm for ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS
 
     // https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-transaction.x#L753
     message StellarSorobanAuthorizationWithAddress {
