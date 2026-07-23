@@ -476,6 +476,15 @@ message StellarInvokeHostFunctionOp {
     optional string source_account = 1;  // (optional) source account address
     required StellarHostFunction function = 2;
     repeated StellarSorobanAuthorizationEntry auth = 3;
+    // (optional) host-supplied claims that some of the invoked contracts are
+    // Stellar Asset Contracts (SAC) of these assets. The device re-derives each
+    // SAC address from the asset and the network passphrase (see CAP-46-2)
+    // instead of trusting the host. SEP-41 token functions (transfer, approve)
+    // invoked on a verified SAC are confirmed with a dedicated, payment-like UI
+    // showing the asset instead of raw contract arguments. Hints with invalid
+    // fields are rejected; valid hints matching no invoked contract are
+    // ignored.
+    repeated StellarAsset asset_hints = 4;
 }
 
 /**
@@ -495,6 +504,10 @@ message StellarSignSorobanAuthorization {
     required string network_passphrase = 2;
     required StellarSorobanAuthorizationEnvelopeType envelope_type = 3;  // the HashIDPreimage variant to sign
     optional StellarSorobanAuthorizationWithAddress soroban_authorization_with_address = 4;  // union arm for ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS
+    // (optional) SAC asset hints for the contracts invoked in the authorization
+    // tree; see StellarInvokeHostFunctionOp.asset_hints for the semantics.
+    // Hints never enter the signed payload.
+    repeated StellarAsset asset_hints = 5;
 
     // https://github.com/stellar/stellar-xdr/blob/v27.0/Stellar-transaction.x#L753
     message StellarSorobanAuthorizationWithAddress {
